@@ -1,0 +1,15 @@
+<launch>
+
+  <machine name="mo" address="localhost" default="true" env-loader="/opt/ros/groovy/env.sh" user="$(env ROS_USERNAME)"/>
+
+  <!--
+  <machine name="pi" address="raspberrypi" user="pi" password="raspberry" env-loader="/opt/ros/groovy/env.sh"> 
+
+  <node pkg="olinoboat" type="publisher.py" name="listener" machine="mo" output="screen"/>
+  -->   
+
+  <node pkg="olinoboat" type="go_fast.py" name="go_fast" machine="mo" output="screen"></node> 
+
+
+
+</launch>

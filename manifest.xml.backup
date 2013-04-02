@@ -1,0 +1,17 @@
+<package>
+  <description brief="olinoboat">
+
+     olinoboat
+
+  </description>
+  <author>Bradley Powers</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/olinoboat</url>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+
+</package>
+
+

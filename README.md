@@ -1,0 +1,1 @@
+This is our ROS package.  In here, put any nodes you create in "Nodes", Arduino code in "Arduino", and Launch files in "Launch".  We can continue populating this (with parameter files, whatever) later.

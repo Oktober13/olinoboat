@@ -1,0 +1,30 @@
+<package>
+  <name>olinoboat</name>
+  <version>1.0.0</version>
+  <description>olinoboat</description>
+  <maintainer email="runnedrun@gmail.com">David Gaynor</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/olinoboat</url>
+  <!-- <url type="bugtracker"></url> -->
+
+  <author>Bradley Powers</author>
+  <author>David Gaynor</author>
+  <author>Adela Wee</author>
+  <author>Franz Schneider</author>
+  <author>Trevor Hooton</author>
+  <author>Britany Strachota</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>std_msgs</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>roscpp</run_depend>
+  
+
+
+  <export>
+
+  </export>
+</package>

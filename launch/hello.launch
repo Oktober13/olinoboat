@@ -1,0 +1,7 @@
+<launch>
+
+  <node pkg="olinoboat" name="talker" type="talker.py"/>
+
+  <node pkg="olinoboat" name="listener" type="listener.py"/>
+
+</launch>
