@@ -1,5 +1,12 @@
 #include <Wire.h>
 #include <LSM303.h>
+#include <ros.h>
+#include <std_msgs/UInt16.h>
+
+ros::NodeHandle nh;
+int xmin;
+
+ros::Publisher pub_xmin("xmin", &xmin);
 
 LSM303 compass;
 LSM303::vector running_min = {2047, 2047, 2047}, running_max = {-2048, -2048, -2048};
@@ -9,18 +16,22 @@ void setup() {
   Wire.begin();
   compass.init();
   compass.enableDefault();
+  
+  nh.advertise(pub_xmin);
 }
 
 void loop() {  
   compass.read();
   
-  running_min.x = min(running_min.x, compass.m.x);
+  xmin.data = min(running_min.x, compass.m.x);
   running_min.y = min(running_min.y, compass.m.y);
   running_min.z = min(running_min.z, compass.m.z);
 
   running_max.x = max(running_max.x, compass.m.x);
   running_max.y = max(running_max.y, compass.m.y);
   running_max.z = max(running_max.z, compass.m.z);
+  
+  pub_xmin.publish(&xmin);
   
   Serial.print("M min ");
   Serial.print("X: ");
