@@ -2,8 +2,6 @@
 import roslib; roslib.load_manifest('olinoboat')
 from hardware import sensors
 import rospy
-import pprint
-pp = pprint.PrettyPrinter(indent=4)
 
 def on_wind_direction_change(angle):
     rospy.loginfo("Compass sent %i" % (angle))

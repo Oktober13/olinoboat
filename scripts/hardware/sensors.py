@@ -54,7 +54,7 @@ class GPS():
         rospy.Subscriber("GPS_output", UInt16, self.__set_current_position)
         rospy.loginfo("GPS initialized")
 
-    def __set_current_position(self, data):
+    def __set_current_position(self, data): # TODO: This is a placeholder, make it real
         rospy.loginfo("GPS sent %i" % (data.data))
         self.current_location = data.data
         self.callback(self.current_location)
