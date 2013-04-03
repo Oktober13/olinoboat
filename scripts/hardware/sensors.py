@@ -74,8 +74,7 @@ class GPS():
 
 class Compass():
 
-    def __init__(self, node = 0):
-        self.angle = 0   
+    def __init__(self, node = 0): 
         self.callback = self.__default_callback          
     
         #initialize node if not loading from think code     
