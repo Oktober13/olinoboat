@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/alamode/src/Test_Hollo_World.cpp : src/Test_Hollo_World.ino
+	@mkdir -p .build/alamode/src
+	@echo [93msrc/Test_Hollo_World.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
+
+
+all : .build/alamode/src/Test_Hollo_World.cpp
+	@true
+
