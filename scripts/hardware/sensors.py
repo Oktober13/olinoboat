@@ -51,13 +51,19 @@ class GPS():
         if node == 0:
             rospy.init_node('data_listener', anonymous=False)
 
-        rospy.Subscriber("GPS_output", UInt16, self.__set_current_position)
+        rospy.Subscriber("gps_lat", UInt16, self.__set_current_lat)
+        rospy.Subscriber("gps_lon", UInt16, self.__set_current_lon)
         rospy.loginfo("GPS initialized")
 
-    def __set_current_position(self, data): # TODO: This is a placeholder, make it real
-        rospy.loginfo("GPS sent %i" % (data.data))
-        self.current_location = data.data
-        self.callback(self.current_location)
+    def __set_current_lat(self, data):
+        rospy.loginfo("GPS sent %i latitude" % (data.data))
+        self.current_lat = data.data
+        self.callback(self.current_lat)
+
+    def __set_current_lon(self, data):
+        rospy.loginfo("GPS sent %i longitude" % (data.data))
+        self.current_lon = data.data
+        self.callback(self.current_lon)
 
     def set_callback(self,callback):
         self.callback = callback
@@ -126,8 +132,6 @@ def init(node):
     gps = GPS(node)
     compass = Compass(node)
     leak_detector = LeakDetector(node)
-
-
 
  
 if __name__ == '__main__':
