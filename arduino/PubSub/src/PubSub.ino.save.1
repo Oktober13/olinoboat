@@ -42,7 +42,8 @@ std_msgs:: UInt16 gps_lon_msg;
 
 float flat;
 float flon;
-unsigned long age;int encoder_pin = 8;
+unsigned long age;
+int encoder_pin = 8;
 int servo1_pin = 9;
 int servo2_pin = 10;
 int water_pin = A1;
@@ -139,7 +140,8 @@ void loop()                     // run over and over again
     pub_gps_lon.publish(&gps_lon_msg);
   }
 
-  // Collecting the encoder PWM signal for relative wind direction
+
+    // Collecting the encoder PWM signal for relative wind direction
   compass_msg.data = pulseIn(encoder_pin, HIGH);
   
   // Collecting water sensor voltage
@@ -147,12 +149,14 @@ void loop()                     // run over and over again
 
   // Collecting compass input vector
   compass.read();
-  compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
+  compass_msg.data = compass.heading((LSM303::vector){0,-1,0}
   
   pub_wind.publish(&wind_msg);
   pub_water.publish(&water_msg);
   pub_compass.publish(&compass_msg);
 
   nh.loginfo("about to spin");
-  nh.spinOnce();  
+  nh.spinOnce();
+  nh.loginfo("pants");
+  
 }

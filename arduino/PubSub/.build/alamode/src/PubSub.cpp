@@ -142,14 +142,21 @@ void loop()                     // run over and over again
     pub_gps_lat.publish(&gps_lat_msg);
     pub_gps_lon.publish(&gps_lon_msg);
   }
+
+  // Collecting the encoder PWM signal for relative wind direction
+  compass_msg.data = pulseIn(encoder_pin, HIGH);
   
+  // Collecting water sensor voltage
+  water_msg.data = analogRead(water_pin);
+
+  // Collecting compass input vector
+  compass.read();
+  compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
   
   pub_wind.publish(&wind_msg);
   pub_water.publish(&water_msg);
   pub_compass.publish(&compass_msg);
 
   nh.loginfo("about to spin");
-  nh.spinOnce();
-  nh.loginfo("pants");
-  
+  nh.spinOnce();  
 }
