@@ -69,8 +69,8 @@ ros::Subscriber<std_msgs::UInt16> sub2("servo2", servo2_cb);
 ros::Publisher pub_wind("pwm_duration", &wind_msg);
 ros::Publisher pub_water("leak", &water_msg);
 ros::Publisher pub_compass("heading", &compass_msg);
-ros::Publisher pub_gps_lat("gps", &gps_lat_msg);
-ros::Publisher pub_gps_lon("gps", &gps_lon_msg);
+ros::Publisher pub_gps_lat("gps_lat", &gps_lat_msg);
+ros::Publisher pub_gps_lon("gps_lon", &gps_lon_msg);
 
 void setup()  
 {

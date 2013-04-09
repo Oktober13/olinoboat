@@ -32,13 +32,13 @@ class WindAngle():
         rospy.loginfo("encoder sent pwm signal: %i" % (data.data))
         phigh = data.data
         self.angle = (360*(phigh - self.__offset)/1024.)%360
-        self.callback(self.angle)
+        self.callback()
 
     def set_callback(self,callback):
         self.callback = callback
 
-    def __default_callback(self, angle):
-        rospy.loginfo("encoder sent pwm signal, but no additional callback has been registered" % (data.data))
+    def __default_callback(self):
+        rospy.loginfo("anlge updated to: %f, but no additional callback has been registered" % (self.angle))
 
 
 class GPS():
@@ -46,6 +46,8 @@ class GPS():
     def __init__(self, node = 0):
         self.current_location = [0,0,0]
         self.callback = self.__default_callback
+        self.lon_updated = 0
+        self.lat_updated = 0 
 
         #initialize node if not loading from think code
         if node == 0:
@@ -58,25 +60,33 @@ class GPS():
     def __set_current_lat(self, data):
         rospy.loginfo("GPS sent %i latitude" % (data.data))
         self.current_lat = data.data
-        self.callback(self.current_lat)
+        self.lat_updated = 1
+        self.__check_that_both_lat_and_lon_have_updated()
 
     def __set_current_lon(self, data):
         rospy.loginfo("GPS sent %i longitude" % (data.data))
         self.current_lon = data.data
-        self.callback(self.current_lon)
+        self.lon_updated = 1
+        self.__check_that_both_lat_and_lon_have_updated()
+
+    def __check_that_both_lat_and_lon_have_updated(self):
+        if self.lat_updated and self.lon_updated:
+            self.lat_updated = 0
+            self.lon_updated = 0
+            self.callback()
 
     def set_callback(self,callback):
         self.callback = callback
 
-    def __default_callback(self, position):
-        rospy.loginfo("GPS sent data: %f, but no additional callback has been registered" % (position))
+    def __default_callback(self):
+        rospy.loginfo("GPS position updated: lat=%f and lon=%f, but no additional callback has been registered" % (self.current_lat,self.current_lon))
 
 
 class Compass():
 
     def __init__(self, node = 0): 
         self.callback = self.__default_callback          
-        self.compass_angle = 0
+        self.heading = 0
     
         #initialize node if not loading from think code     
         if node == 0:
@@ -88,14 +98,14 @@ class Compass():
 
     def __set_angle(self, data):
         rospy.loginfo("Compass sent %i" % (data.data))
-        self.compass_angle = data.data
-        self.callback(self.compass_angle)
+        self.heading = data.data
+        self.callback()
 
     def set_callback(self,callback):
         self.callback = callback
 
-    def __default_callback(self, direction):
-        rospy.loginfo("encoder sent pwm signal: %f, but no additionalcallback has been registered" % (direction))
+    def __default_callback(self):
+        rospy.loginfo("compass heading updated: %f, but no additional callback has been registered" % (self.heading))
 
 class LeakDetector():
     def __init__(self, node=0, leak_callback=0,):
@@ -127,12 +137,12 @@ def init(node):
     global wind_angle
     global gps
     global compass
-    global leak_detector
+    # global leak_detector
 
     wind_angle = WindAngle(0,node)
     gps = GPS(node)
     compass = Compass(node)
-    leak_detector = LeakDetector(node)
+    # leak_detector = LeakDetector(node)
 
  
 if __name__ == '__main__':
