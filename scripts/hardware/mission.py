@@ -2,6 +2,7 @@
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import UInt16
+from std_msgs.msg import Float32
 
 compass=None
 gps=None
