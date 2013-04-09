@@ -1,0 +1,8 @@
+cmake_install.cmake
+build/
+bin/
+msg_gen/
+srv_gen/
+junk_tests/
+*.pyc
+.build/

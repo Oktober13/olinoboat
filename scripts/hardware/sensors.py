@@ -69,18 +69,20 @@ class GPS():
         self.callback = callback
 
     def __default_callback(self, position):
-        rospy.loginfo("GPS sent data, but no additional callback has been registered" % (data.data))
+        rospy.loginfo("GPS sent data: %f, but no additional callback has been registered" % (position))
 
 
 class Compass():
 
     def __init__(self, node = 0): 
         self.callback = self.__default_callback          
+        self.compass_angle = 0
     
         #initialize node if not loading from think code     
         if node == 0:
             rospy.init_node('data_listener', anonymous=False)
     
+
         rospy.Subscriber("heading", UInt16, self.__set_angle)
         rospy.loginfo("Compass initialized")
 
@@ -93,7 +95,7 @@ class Compass():
         self.callback = callback
 
     def __default_callback(self, direction):
-        rospy.loginfo("encoder sent pwm signal, but no additionalcallback has been registered" % (data.data))
+        rospy.loginfo("encoder sent pwm signal: %f, but no additionalcallback has been registered" % (direction))
 
 class LeakDetector():
     def __init__(self, node=0, leak_callback=0,):
