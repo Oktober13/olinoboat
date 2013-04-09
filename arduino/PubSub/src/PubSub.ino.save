@@ -141,11 +141,11 @@ void loop()                     // run over and over again
 
   // Collecting the encoder PWM signal for relative wind direction
   compass_msg.data = pulseIn(encoder_pin, HIGH);
-  
-  // Collecting water sensor voltage
+
+  //Collecting water sensor voltage
   water_msg.data = analogRead(water_pin);
 
-  // Collecting compass input vector
+  //Collecting compass input vector
   compass.read();
   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
   
@@ -154,5 +154,7 @@ void loop()                     // run over and over again
   pub_compass.publish(&compass_msg);
 
   nh.loginfo("about to spin");
-  nh.spinOnce();  
+  nh.spinOnce();
+  nh.loginfo("pants");
+  
 }

@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/alamode/src/PubSub.cpp : src/PubSub.ino
+	@mkdir -p .build/alamode/src
+	@echo [93msrc/PubSub.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
+
+
+all : .build/alamode/src/PubSub.cpp
+	@true
+
