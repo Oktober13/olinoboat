@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/alamode/src/Blink.cpp : src/Blink.ino
+	@mkdir -p .build/alamode/src
+	@echo [93msrc/Blink.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
+
+
+all : .build/alamode/src/Blink.cpp
+	@true
+
