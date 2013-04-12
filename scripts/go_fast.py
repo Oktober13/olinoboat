@@ -1,31 +1,44 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('olinoboat')
-from hardware import sensors
 import rospy
+import pylab as pl
+from hardware import sensors
 from std_msgs.msg import String
 
-def go_fast_cb(angle):
+def pull_heading_up(array, heading):     # This array expects the form [[p1, p2], [p1, p2]...]
+    print array
+    for i in range(len(array)):
+        for j in range(int(round(array[i][0])), int(round(array[i][1]))):
+            heading[j] = 0
+    return heading
+
+def go_fast_cb():
     
-	go_fast_pub = rospy.Publisher('go_fast_topic', String)
-    rospy.loginfo("Wind sensor sent %i" % (angle))
+    angle = sensors.wind_angle.angle
+
+    go_fast_pub = rospy.Publisher('go_fast_topic', String)
+    rospy.loginfo("Wind sensor sent %i" %angle)
 
     upwind_cutoff = 50	    # Degrees
     downwind_cutoff = 10    # Degrees
 
-    # This code makes it so that you can use pl.interp on relative_angles and go_or_not_go and it will return '0' if the given angle is directly downwind or in irons
-    relative_angles = [0, upwind_cutoff - 1, upwind_cutoff, 180-downwind_cutoff-1, 180-downwind_cutoff, 180+downwind_cutoff, 180+downwind_cutoff+1, -upwind_cutoff-1, -upwind_cutoff, 0]
-    relative_angles = relative_angles + angle
-    for i in range(len(relative_angles))
-    	relative_angles[i] = relative_angles[i] % 360
-    go_or_not_go = [0, 0, 1, 1, 0, 0, 1, 1, 0]
+    go_fast_heading = [1 for x in range(360)]
 
-    # Builds a list of 360 degree elements around the boat that say whether the boat can go in a given direction
-    # If the 30th number in the list is 0, it means the boat shouldn't go 30 degrees to the right
-    for i in range(360):
-    	go_fast_heading[i] = pl.interp(i, relative_angles, go_or_not_go)
+    if (angle-upwind_cutoff) < 0 or (angle+upwind_cutoff) > 360:
+        print 'Case 1'
+        go_fast_heading = pull_heading_up([[0, (angle+upwind_cutoff) % 360],[(angle-upwind_cutoff)%360, 360],\
+            [((angle+180)%360)-downwind_cutoff, ((angle+180)%360)+downwind_cutoff]], go_fast_heading)
+    elif (((angle-180)%360)-downwind_cutoff) < 0 or (((angle+180)%360)+downwind_cutoff) > 360:
+        print 'Case 2'
+        go_fast_heading = pull_heading_up([[0, (angle+180+downwind_cutoff) % 360],[(angle-180-downwind_cutoff)%360, 360],\
+            [angle-upwind_cutoff, angle+upwind_cutoff]], go_fast_heading)
+    else:
+        print 'Case 3'
+        go_fast_heading = pull_heading_up([[((angle+180)%360)-downwind_cutoff, ((angle+180)%360)+downwind_cutoff],\
+            [angle-upwind_cutoff, angle+upwind_cutoff]], go_fast_heading)
 
     go_fast_pub.publish(str(go_fast_heading))
-    rospy.loginfo("go_fast_node suggested heading is:" + str(go_fast_heading)
+    rospy.loginfo("go_fast_node suggested heading is:" + str(go_fast_heading))
 
 
 current_node = rospy.init_node("go_fast_node",anonymous=True)
