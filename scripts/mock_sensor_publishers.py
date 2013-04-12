@@ -7,8 +7,8 @@ from std_msgs.msg import Float32
 current_node = rospy.init_node("mock_sensors",anonymous=True)
 # leak_detector = rospy.Publisher("leak",UInt16)
 compass = rospy.Publisher("heading",UInt16)
-GPS_lat = rospy.Publisher("gps_lat", UInt16)
-GPS_lon = rospy.Publisher("gps_lon", UInt16)
+GPS_lat = rospy.Publisher("gps_lat", Float32)
+GPS_lon = rospy.Publisher("gps_lon", Float32)
 wind_sensor_offset = rospy.Publisher("offset", UInt16)
 wind_sensor_pwm = rospy.Publisher("pwm_duration", UInt16)
 

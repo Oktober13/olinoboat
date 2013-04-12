@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
+from pylab import *
 from std_msgs.msg import UInt16
+from std_msgs.msg import Float32
 import pprint as pp
 
 compass=None
@@ -40,7 +42,7 @@ class WindAngle():
         self.callback = callback
 
     def __default_callback(self):
-        rospy.loginfo("anlge updated to: %f, but no additional callback has been registered" % (self.angle))
+        rospy.loginfo("Wind angle updated to: %f, but no additional callback has been registered" % (self.angle))
 
 
 class GPS():
@@ -48,6 +50,8 @@ class GPS():
     def __init__(self, node = 0):
         self.current_location = [0,0,0]
         self.callback = self.__default_callback
+        self.current_x = 0
+        self.current_y = 0
         self.x_updated = 0
         self.y_updated = 0 
 
@@ -55,8 +59,8 @@ class GPS():
         if node == 0:
             rospy.init_node('data_listener', anonymous=False)
 
-        rospy.Subscriber("gps_lon", UInt16, self.__set_current_x)
-        rospy.Subscriber("gps_lat", UInt16, self.__set_current_y)
+        rospy.Subscriber("gps_lon", Float32, self.__set_current_x)
+        rospy.Subscriber("gps_lat", Float32, self.__set_current_y)
         rospy.loginfo("GPS initialized")
 
     def __set_current_x(self, data):
