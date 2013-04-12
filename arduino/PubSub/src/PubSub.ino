@@ -140,15 +140,15 @@ void loop()                     // run over and over again
   }
 
   // Collecting the encoder PWM signal for relative wind direction
-  compass_msg.data = pulseIn(encoder_pin, HIGH);
+  wind_msg.data = pulseIn(encoder_pin, HIGH);
   
   // Collecting water sensor voltage
-  water_msg.data = analogRead(water_pin);
+//  water_msg.data = analogRead(water_pin);
 
   // Collecting compass input vector
   compass.read();
   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
-  
+ 
   pub_wind.publish(&wind_msg);
   pub_water.publish(&water_msg);
   pub_compass.publish(&compass_msg);

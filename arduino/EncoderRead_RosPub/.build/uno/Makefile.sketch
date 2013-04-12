@@ -3,7 +3,12 @@
 
 
 
+.build/uno/src/EncoderRead_RosPub.cpp : src/EncoderRead_RosPub.ino
+	@mkdir -p .build/uno/src
+	@echo [93msrc/EncoderRead_RosPub.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
 
-all : 
+
+all : .build/uno/src/EncoderRead_RosPub.cpp
 	@true
 

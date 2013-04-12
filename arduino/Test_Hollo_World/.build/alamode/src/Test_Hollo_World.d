@@ -9,18 +9,14 @@
  /usr/share/arduino/hardware/arduino/cores/arduino/Printable.h \
  /usr/share/arduino/hardware/arduino/cores/arduino/new.h \
  /usr/share/arduino/hardware/arduino/variants/standard/pins_arduino.h \
- /opt/ros/groovy/include/std_msgs/String.h \
- /opt/ros/groovy/include/ros/types.h \
- /opt/ros/groovy/include/ros/serialization.h \
- /opt/ros/groovy/include/ros/roscpp_serialization_macros.h \
- /opt/ros/groovy/include/ros/macros.h /opt/ros/groovy/include/ros/time.h \
- /opt/ros/groovy/include/ros/platform.h \
- /opt/ros/groovy/include/ros/exception.h \
- /opt/ros/groovy/include/ros/duration.h \
- /opt/ros/groovy/include/ros/rostime_decl.h \
- /opt/ros/groovy/include/ros/serialized_message.h \
- /opt/ros/groovy/include/ros/message_traits.h \
- /opt/ros/groovy/include/ros/message_forward.h \
- /opt/ros/groovy/include/ros/builtin_message_traits.h \
- /opt/ros/groovy/include/ros/message_traits.h \
- /opt/ros/groovy/include/ros/message_operations.h
+ lib/ros_lib/ros.h lib/ros_lib/ros/node_handle.h \
+ lib/ros_lib/std_msgs/Time.h lib/ros_lib/std_msgs/../ros/msg.h \
+ lib/ros_lib/ros/time.h lib/ros_lib/ros/duration.h \
+ lib/ros_lib/rosserial_msgs/TopicInfo.h \
+ lib/ros_lib/rosserial_msgs/../ros/msg.h lib/ros_lib/rosserial_msgs/Log.h \
+ lib/ros_lib/rosserial_msgs/RequestParam.h lib/ros_lib/ros/node_output.h \
+ lib/ros_lib/ros/msg.h lib/ros_lib/ros/publisher.h \
+ lib/ros_lib/ros/msg_receiver.h lib/ros_lib/ros/subscriber.h \
+ lib/ros_lib/ros/service_server.h lib/ros_lib/ArduinoHardware.h \
+ /usr/share/arduino/hardware/arduino/cores/arduino/HardwareSerial.h \
+ lib/ros_lib/std_msgs/String.h
