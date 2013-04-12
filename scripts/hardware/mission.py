@@ -22,23 +22,23 @@ class MissionGoal():
         if node == 0:
             rospy.init_node('data_listener', anonymous=False)
 
-        #set up subscribers to ("topic", DataType, callback_function)
+        # set up subscribers to ("topic", DataType, callback_function)
         rospy.Subscriber("gps_lat", UInt16, self.__update_goal_point)
         rospy.loginfo("Mission goal publisher initialized")
 
     def __update_goal_point(self, data):
         
-        boat_lat = sensors.gps_lat
-        boat_lon = sensors.gps_lon
-        rospy.loginfo("GPS sent signal: %i , %i" % (boat_lat, boat_lon))
+        boat_x = self.sensors.gps.current_x
+        boat_y = self.sensors.gps.current_y
+        rospy.loginfo("GPS sent signal: x=%f , y=%f" % (boat_x, boat_y))
         
         temp_goal = literal_eval(self.goals[index])
-        target_dis = hypot((temp_goal[0]-boat_lat), (temp_goal[1]-boat_lon))
+        target_dis = hypot((temp_goal[0]-boat_x), (temp_goal[1]-boat_y))
 
         if target_dis < self.success_dis:
             index += 1
 
-        self.current_goal = literal_eval(self.goals[index])
+        self.current_goal = literal_eval(self.goals)[index]
         self.callback(self.current_goal)
 
     def set_callback(self,callback):
@@ -49,12 +49,14 @@ class MissionGoal():
 
 def init(node):
     global mission_goal
-    sensors.init()
+    sensors.init(node)
 
     # waypoints = yaml.yaml_parse(file)
-    waypoints = ['[0, 0]', '[2, 2]', '[5, 5]']
+    waypoints = '[[0, 0], [2, 2], [5, 5]]'
 
-    mission_goal = MissionGoal(0, sensors, waypoints, node)
- 
+    mission_goal = MissionGoal(sensors, waypoints, node)
+
+
+
 if __name__ == '__main__':
    pass
