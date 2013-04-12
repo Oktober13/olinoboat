@@ -3,20 +3,20 @@ import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import UInt16
 from hardware import sensors
+from ast import literal_eval
+from math import hypot
 
 mission_goal=None
-waypoints = yaml.yaml_parse(file)
-index = 0
 
 class MissionGoal():
 
-    def __init__(self, sensors, node = 0):
-        self.latitude = 0
-        self.longitude = 0
-        self.goal = '[0, 0]'
+    def __init__(self, sensors, waypoints, node = 0):
         self.callback = self.__default_callback
         self.sensors = sensors
-
+        self.success_dis = 2    # Meters
+        self.goals = waypoints
+        self.index = 0
+        self.current_goal = [0, 0]
 
         #initialize node if not running from the think code
         if node == 0:
@@ -24,32 +24,37 @@ class MissionGoal():
 
         #set up subscribers to ("topic", DataType, callback_function)
         rospy.Subscriber("gps_lat", UInt16, self.__update_goal_point)
-        rospy.Subscriber("gps_lon", UInt16, self.__update_goal_point)
-        # I DON"T KNOW HOW TO DEAL WITH SULTIPLE SUBSCRIBERS....
         rospy.loginfo("Mission goal publisher initialized")
 
     def __update_goal_point(self, data):
-        # HOW CAN WE MAKE THIS DEAL WITH MULTIPE SUBSCRIBERS?
-        rospy.loginfo("GPS sent signal: %i , %i" % (data.data), (data.data))
         
-        # This is what you do with the GPS point
-        current_goal = get_goal(file)
-        if point is close to current goal:
-            move_to_next_mission(file)
-        publish_current_goal(file)
+        boat_lat = sensors.gps_lat
+        boat_lon = sensors.gps_lon
+        rospy.loginfo("GPS sent signal: %i , %i" % (boat_lat, boat_lon))
         
-        self.callback()
+        temp_goal = literal_eval(self.goals[index])
+        target_dis = hypot((temp_goal[0]-boat_lat), (temp_goal[1]-boat_lon))
+
+        if target_dis < self.success_dis:
+            index += 1
+
+        self.current_goal = literal_eval(self.goals[index])
+        self.callback(self.current_goal)
 
     def set_callback(self,callback):
         self.callback = callback
 
-    def __default_callback(self):
-        rospy.loginfo("Current goal set to %s, but no additional callback has been registered" % (self.goal))
+    def __default_callback(self, data):
+        rospy.loginfo("Current goal set to %s, but no additional callback has been registered" % data)
 
 def init(node):
     global mission_goal
     sensors.init()
-    mission_goal = MissionGoal(0, sensors, node)
+
+    # waypoints = yaml.yaml_parse(file)
+    waypoints = ['[0, 0]', '[2, 2]', '[5, 5]']
+
+    mission_goal = MissionGoal(0, sensors, waypoints, node)
  
 if __name__ == '__main__':
    pass
