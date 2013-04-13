@@ -114,45 +114,45 @@ void setup()
 
 void loop()                     // run over and over again
 {
-  bool newData = false;
-  for (unsigned long start = millis(); millis() - start < 1000;)
-  {;
-  while (nss.available())
-  {
-    int c = nss.read();
-    nh.loginfo("new gps data");
-    if (gps.encode(c))
-    {
-      newData = true;
-      // process new gps info here
-    }
-  }
-  }
+//   bool newData = false;
+//   for (unsigned long start = millis(); millis() - start < 1000;)
+//   {;
+//   while (nss.available())
+//   {
+//     int c = nss.read();
+//     nh.loginfo("new gps data");
+//     if (gps.encode(c))
+//     {
+//       newData = true;
+//       // process new gps info here
+//     }
+//   }
+//   }
   
-  if (newData){
-    gps.f_get_position(&flat, &flon, &age);
-    flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
-    gps_lat_msg.data = flat;
-    flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
-    gps_lon_msg.data = flon; 
-    pub_gps_lat.publish(&gps_lat_msg);
-    pub_gps_lon.publish(&gps_lon_msg);
-  }
+//   if (newData){
+//     gps.f_get_position(&flat, &flon, &age);
+//     flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
+//     gps_lat_msg.data = flat;
+//     flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
+//     gps_lon_msg.data = flon; 
+//     pub_gps_lat.publish(&gps_lat_msg);
+//     pub_gps_lon.publish(&gps_lon_msg);
+//   }
 
-  // Collecting the encoder PWM signal for relative wind direction
-  wind_msg.data = pulseIn(encoder_pin, HIGH);
+//   // Collecting the encoder PWM signal for relative wind direction
+//   wind_msg.data = pulseIn(encoder_pin, HIGH);
   
-  // Collecting water sensor voltage
-//  water_msg.data = analogRead(water_pin);
+//   // Collecting water sensor voltage
+// //  water_msg.data = analogRead(water_pin);
 
-  // Collecting compass input vector
-  compass.read();
-  compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
+//   // Collecting compass input vector
+//   compass.read();
+//   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
  
-  pub_wind.publish(&wind_msg);
-  pub_water.publish(&water_msg);
-  pub_compass.publish(&compass_msg);
+//   pub_wind.publish(&wind_msg);
+//   pub_water.publish(&water_msg);
+//   pub_compass.publish(&compass_msg);
 
-  nh.loginfo("about to spin");
+//   nh.loginfo("about to spin");
   nh.spinOnce();  
 }
