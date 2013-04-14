@@ -3,7 +3,7 @@ import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from pylab import *
 from std_msgs.msg import UInt16
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64
 import pprint as pp
 
 compass=None
@@ -25,14 +25,14 @@ class WindAngle():
         #set up subscribers to ("topic", DataType, callback_function)
         rospy.Subscriber("offset", UInt16, self.__set_offset)
         rospy.Subscriber("pwm_duration", UInt16, self.__pwm_to_wind_angle)
-        rospy.loginfo("WindAngle initialized")
+        rospy.loginfo("sensors.py: WindAngle initialized")
 
     def __set_offset(self, data):
-        rospy.loginfo("encoder send offset signal: %i" % (data.data))
+        rospy.loginfo("sensors.py: encoder send offset signal: %i" % (data.data))
         self.offset = data.data
 
     def __pwm_to_wind_angle(self, data):
-        rospy.loginfo("encoder sent pwm signal: %i" % (data.data))
+        rospy.loginfo("sensors.py: encoder sent pwm signal: %i" % (data.data))
         pp.pprint(data)
         phigh = data.data
         self.angle = (360*(phigh - self.__offset)/1024.)%360
@@ -42,10 +42,10 @@ class WindAngle():
         self.callback = callback
 
     def __default_callback(self):
-        rospy.loginfo("Wind angle updated to: %f, but no additional callback has been registered" % (self.angle))
+        rospy.loginfo("sensors.py: Wind angle updated to: %f, but no additional callback has been registered" % (self.angle))
 
 
-class GPS():
+class GPS():    # If you want to do any really long term missions with this code, the UTM zones (currently unused) must be integrated. Wikipedia UTM for more information
 
     def __init__(self, node = 0):
         self.current_location = [0,0,0]
@@ -59,18 +59,18 @@ class GPS():
         if node == 0:
             rospy.init_node('data_listener', anonymous=False)
 
-        rospy.Subscriber("gps_lon", Float32, self.__set_current_x)
-        rospy.Subscriber("gps_lat", Float32, self.__set_current_y)
-        rospy.loginfo("GPS initialized")
+        rospy.Subscriber("gps_lon", Float64, self.__set_current_x)
+        rospy.Subscriber("gps_lat", Float64, self.__set_current_y)
+        rospy.loginfo("sensors.py: GPS initialized")
 
     def __set_current_x(self, data):
-        rospy.loginfo("GPS sent %i longitude" % (data.data))
+        rospy.loginfo("sensors.py: GPS sent %i longitude" % (data.data))
         self.current_x = lat_lon_to_UTM([0, data.data])[0][1]
         self.x_updated = 1
         self.__check_that_both_x_and_y_have_updated()
 
     def __set_current_y(self, data):
-        rospy.loginfo("GPS sent %i latitude" % (data.data))
+        rospy.loginfo("sensors.py: GPS sent %i latitude" % (data.data))
         self.current_y = lat_lon_to_UTM([data.data, 0])[0][0]
         self.y_updated = 1
         self.__check_that_both_x_and_y_have_updated()
@@ -85,7 +85,7 @@ class GPS():
         self.callback = callback
 
     def __default_callback(self):
-        rospy.loginfo("GPS position updated: x=%f and y=%f, but no additional callback has been registered" % (self.current_x,self.current_y))
+        rospy.loginfo("sensors.py: GPS position updated: x=%f and y=%f, but no additional callback has been registered" % (self.current_x,self.current_y))
 
 
 class Compass():
@@ -99,10 +99,10 @@ class Compass():
             rospy.init_node('data_listener', anonymous=False)
 
         rospy.Subscriber("heading", UInt16, self.__set_angle)
-        rospy.loginfo("Compass initialized")
+        rospy.loginfo("sensors.py: Compass initialized")
 
     def __set_angle(self, data):
-        rospy.loginfo("Compass sent %i" % (data.data))
+        rospy.loginfo("sensors.py: Compass sent %i" % (data.data))
         self.heading = data.data
         self.callback()
 
@@ -110,7 +110,7 @@ class Compass():
         self.callback = callback
 
     def __default_callback(self):
-        rospy.loginfo("compass heading updated: %f, but no additional callback has been registered" % (self.heading))
+        rospy.loginfo("sensors.py: compass heading updated: %f, but no additional callback has been registered" % (self.heading))
 
 class LeakDetector():
     def __init__(self, node=0, leak_callback=0,):
@@ -121,18 +121,18 @@ class LeakDetector():
             rospy.init_node('data_listener', anonymous=False)
 
         rospy.Subscriber("leak",UInt16,self.__check_for_leak)
-        rospy.loginfo("Leak detector initialized")
+        rospy.loginfo("sensors.py: Leak detector initialized")
 
     def __check_for_leak(self,data):
         if data.data > 1:
             self.leak_detected = 1
             self.leak_callback()
         else:
-            rospy.loginfo("clear, no leak")
+            rospy.loginfo("sensors.py: clear, no leak")
             self.leak = 0
 
     def __default_leak_callback(self):
-        rospy.loginfo("Leak detected, but no callback registered")
+        rospy.loginfo("sensors.py: Leak detected, but no callback registered")
 
     def set_callback(self,callback):
         self.leak_callback = callback

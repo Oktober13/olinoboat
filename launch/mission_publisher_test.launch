@@ -1,0 +1,7 @@
+<launch>
+
+  <node pkg="olinoboat" name="mock_sensor_publishers" type="mock_sensor_publishers.py"/>
+
+  <node pkg="olinoboat" name="fake_gps_listener" type="fake_gps_listener.py"/>
+
+</launch>
