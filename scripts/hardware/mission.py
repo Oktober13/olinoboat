@@ -41,8 +41,7 @@ class MissionGoal():
             rospy.loginfo("mission.py: Hit waypoint! Got within %f meters" %target_dis)
 
         self.current_goal = literal_eval(self.goals)[self.index]
-        self.callback(self.current_goal)
-        # self.callback()
+        self.callback()
 
     def set_callback(self,callback):
         self.callback = callback
