@@ -5,9 +5,9 @@
 #
 #######	Example	#########
 #
-#p=PID(3.0,0.4,1.2)
-#p.setPoint(5.0)
-#while True:
+# p=PID(3.0,0.4,1.2)
+# p.setPoint(5.0)
+# while True:
 #     pid = p.update(measurement_value)
 
 
@@ -26,7 +26,7 @@ class PID:
 		self.Integrator_max=Integrator_max
 		self.Integrator_min=Integrator_min
 
-		self.set_point=0.0
+		self.set_point= 0.0
 		self.error=0.0
 
 	def update(self,current_value):

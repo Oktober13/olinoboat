@@ -18,12 +18,12 @@ class Servo:
 
     def set_position(self,degrees,):
         self.__publisher.publish(degrees)
-        rospy.loginfo("%s moved %i degrees" % (self.name,degrees))
+        rospy.loginfo("servos.py: %s moved to %i degrees" % (self.name, degrees))
         self.current_position = degrees
         
 
 def init(node):
     global sail 
     global rudder
-    sail = Servo("sail",node)
+    sail = Servo("sail", node)
     rudder = Servo("rudder", node)

@@ -20,7 +20,7 @@ def go_fast_cb():
     angle = sensors.wind_angle.angle
 
     go_fast_pub = rospy.Publisher('go_fast_topic', String)
-    rospy.loginfo("Wind sensor sent %i" %angle)
+    rospy.loginfo("go_fast.py:Wind sensor sent %i" %angle)
 
     upwind_cutoff = 50	    # Degrees
     downwind_cutoff = 10    # Degrees
@@ -42,8 +42,8 @@ def go_fast_cb():
 
     # go_fast_pub.publish("go_fast:"+str(go_fast_heading_weights))
     suggested_heading = go_fast_heading_weights
-    rospy.loginfo("go_fast_node suggested heading is:" + str(go_fast_heading_weights))
-
+    rospy.loginfo("go_fast.py:go_fast_node suggested heading is:" + str(go_fast_heading_weights))
+    go_fast_pub.publish(str(go_fast_heading_weights))
 
 # current_node = rospy.init_node("go_fast_node",anonymous=True)
 # sensors.init(current_node)

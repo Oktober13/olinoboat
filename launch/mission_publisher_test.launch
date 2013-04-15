@@ -1,0 +1,5 @@
+<launch>
+
+  <node pkg="olinoboat" name="mock_sensor_publishers" type="mock_sensor_publishers.py"/>
+
+</launch>

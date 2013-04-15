@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64
 from hardware import sensors
 from ast import literal_eval
 from math import hypot
@@ -23,37 +23,38 @@ class MissionGoal():
             rospy.init_node('data_listener', anonymous=False)
 
         # set up subscribers to ("topic", DataType, callback_function)
-        rospy.Subscriber("gps_lat", Float32, self.__update_goal_point)
-        rospy.loginfo("Mission goal publisher initialized")
+        rospy.Subscriber("gps_lat", Float64, self.__update_goal_point)
+        rospy.loginfo("mission.py: Mission goal publisher initialized")
 
     def __update_goal_point(self, data):
         
-        boat_x = self.sensors.gps.current_x
-        boat_y = self.sensors.gps.current_y
-        rospy.loginfo("Checking GPS signal x=%f , y=%f against the current goal" % (boat_x, boat_y))
+        boat_x = self.sensors.gps.current_x     # Data type: Float64
+        boat_y = self.sensors.gps.current_y     # Data type: Float64
+
+        rospy.loginfo("mission.py: Checking GPS signal x=%f , y=%f against the current goal" % (boat_x, boat_y))
         
         temp_goal = literal_eval(self.goals)[self.index]
         target_dis = hypot((temp_goal[0]-boat_x), (temp_goal[1]-boat_y))
 
         if target_dis < self.success_dis:
             self.index += 1
+            rospy.loginfo("mission.py: Hit waypoint! Got within %f meters" %target_dis)
 
         self.current_goal = literal_eval(self.goals)[self.index]
-        # self.callback(self.current_goal)
         self.callback()
 
     def set_callback(self,callback):
         self.callback = callback
 
     def __default_callback(self, data):
-        rospy.loginfo("Current goal set to %s, but no additional callback has been registered" % data)
+        rospy.loginfo("mission.py: Current goal set to %s, but no additional callback has been registered" % data)
 
 def init(node):
     global mission_goal
     sensors.init(node)
 
     # waypoints = yaml.yaml_parse(file)
-    waypoints = '[[0, 0], [2, 2], [5, 5]]'
+    waypoints = '[[1 , 251536], [2, 2], [5, 5]]'
 
     mission_goal = MissionGoal(sensors, waypoints, node)
 
