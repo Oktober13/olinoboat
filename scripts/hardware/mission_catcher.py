@@ -25,7 +25,6 @@ class MissionGoal():
         rospy.loginfo("mission_catcher.py: Saving goal point %s" %(data.data))
         self.current_goal = literal_eval(self.goals)[self.index]
         self.callback()
-        # self.callback()
 
     def set_callback(self,callback):
         self.callback = callback
@@ -35,7 +34,7 @@ class MissionGoal():
 
 def init(node):
     global mission_goal
-    mission_goal = MissionGoal(sensors, waypoints, node)
+    mission_goal = MissionGoal(node)
 
 if __name__ == '__main__':
    pass
