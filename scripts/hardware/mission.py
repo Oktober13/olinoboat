@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, String
 from hardware import sensors
 from ast import literal_eval
 from math import hypot
@@ -54,9 +54,11 @@ def init(node):
     sensors.init(node)
 
     # waypoints = yaml.yaml_parse(file)
-    waypoints = '[[1 , 251536], [2, 2], [5, 5]]'
+    #waypoints = '[[1 , 251536], [2, 2], [5, 5]]'esired_heading
 
     mission_goal = MissionGoal(sensors, waypoints, node)
+    rospy.Subscriber("Waypoint", String, mission_goal.__update_goal_point)
+
 
 
 
