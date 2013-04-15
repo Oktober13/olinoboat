@@ -3,8 +3,8 @@ import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import Float64, String
 from hardware import sensors
-from ast import literal_eval
 from math import hypot
+from programming_tools import read_mission
 
 mission_goal=None
 
@@ -27,21 +27,20 @@ class MissionGoal():
         rospy.loginfo("mission.py: Mission goal publisher initialized")
 
     def __update_goal_point(self, data):
-        
-	rospy.loginfo("updating gps")
+        rospy.loginfo("mission.py: Grabbing GPS data")
         boat_x = self.sensors.gps.current_x     # Data type: Float64
         boat_y = self.sensors.gps.current_y     # Data type: Float64
 
         rospy.loginfo("mission.py: Checking GPS signal x=%f , y=%f against the current goal" % (boat_x, boat_y))
-        
-        temp_goal = literal_eval(self.goals)[self.index]
+
+        temp_goal = self.goals[self.index]
         target_dis = hypot((temp_goal[0]-boat_x), (temp_goal[1]-boat_y))
 
         if target_dis < self.success_dis:
             self.index += 1
             rospy.loginfo("mission.py: Hit waypoint! Got within %f meters" %target_dis)
 
-        self.current_goal = literal_eval(self.goals)[self.index]
+        self.current_goal = self.goals[self.index]
         self.callback()
 
     def set_callback(self,callback):
@@ -54,8 +53,8 @@ def init(node):
     global mission_goal
     sensors.init(node)
 
-    # waypoints = yaml.yaml_parse(file)
-    waypoints = '[[2 , 251537], [2, 2], [5, 5]]'
+    waypoints = read_mission.read_mission_csv()
+    # waypoints = '[[2 , 251537], [2, 2], [5, 5]]'
 
     mission_goal = MissionGoal(sensors, waypoints, node)
 

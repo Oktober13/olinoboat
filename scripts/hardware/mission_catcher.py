@@ -21,7 +21,7 @@ class MissionGoal():
 
     def __update_goal_point(self, data):
         
-        rospy.loginfo("mission_catcher.py: Saving goal point %s" %(data.data))
+        rospy.loginfo("mission_catcher.py: Recieved goal point %s" %(data.data))
 
         self.current_goal = literal_eval(data.data)
         self.callback()
