@@ -43,7 +43,7 @@ def go_fast_cb():
     # go_fast_pub.publish("go_fast:"+str(go_fast_heading_weights))
     suggested_heading = go_fast_heading_weights
     rospy.loginfo("go_fast.py:go_fast_node suggested heading is:" + str(go_fast_heading_weights))
-
+    go_fast_pub.publish(str(go_fast_heading_weights))
 
 # current_node = rospy.init_node("go_fast_node",anonymous=True)
 # sensors.init(current_node)
