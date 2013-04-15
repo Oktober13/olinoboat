@@ -74,9 +74,6 @@ ros::Publisher pub_gps_lon("gps_lon", &gps_lon_msg);
 
 void setup()  
 {
-  nh.initNode();
-  
-  
   // Set up Arduino hardware pins
   pinMode(encoder_pin, INPUT); // set encoder_pin to input
   pinMode(water_pin, INPUT); // set water_pin to input
@@ -89,6 +86,9 @@ void setup()
   Wire.begin();
   compass.init();
   compass.enableDefault();
+  compass.setTimeout(100);
+  pinMode(9, INPUT);
+
   // Calibration values. Use the Calibrate example program to get the values for
   // your compass.
   compass.m_min.x = -520; compass.m_min.y = -570; compass.m_min.z = -770;
@@ -96,6 +96,7 @@ void setup()
 
   
   // "Advertise" to the node the topics being published
+  nh.initNode();
   nh.advertise(pub_wind);
   nh.advertise(pub_compass);
   nh.advertise(pub_water);
@@ -108,53 +109,57 @@ void setup()
   nh.subscribe(sub1);
   nh.subscribe(sub2);
 
+  Serial.begin(57600);
   delay(50);
-  
 }
+unsigned long timer;
+
 
 void loop()                     // run over and over again
 {
-   bool newData = false;
-//   for (unsigned long start = millis(); millis() - start < 1000;)
-//   {;
-//   while (nss.available())
-//   {
-     int c = nss.read();
-//     nh.loginfo("testing logging");
-     if (gps.encode(c))
-     {
-       newData = true;
-       // process new gps info here
-     }
- //  }
- //  }
+  bool newData = false;
+// //   for (unsigned long start = millis(); millis() - start < 1000;)
+// //   {;
+// //   while (nss.available())
+// //   {
+     // int c = nss.read();
+// //     nh.loginfo("testing logging");
+     // if (gps.encode(c))
+     // {
+     //   newData = true;
+     //   // process new gps info here
+     // }
+//  //  }
+//  //  }
   
-   if (newData){
-     nh.loginfo("getting position now");
-     gps.f_get_position(&flat, &flon, &age);
-     flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
-     gps_lat_msg.data = flat;
-     flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
-     gps_lon_msg.data = flon; 
-     pub_gps_lat.publish(&gps_lat_msg);
-     pub_gps_lon.publish(&gps_lon_msg);
-   }
+   // if (newData){
+   //   nh.loginfo("getting position now");
+   //   gps.f_get_position(&flat, &flon, &age);
+   //   flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
+   //   gps_lat_msg.data = flat;
+   //   flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
+   //   gps_lon_msg.data = flon; 
+   //   pub_gps_lat.publish(&gps_lat_msg);
+   //   pub_gps_lon.publish(&gps_lon_msg);
+   // }
 
 //   // Collecting the encoder PWM signal for relative wind direction
-//   wind_msg.data = pulseIn(encoder_pin, HIGH);
+  // wind_msg.data = pulseIn(encoder_pin, HIGH);
   
 //   // Collecting water sensor voltage
-// //  water_msg.data = analogRead(water_pin);
+  // water_msg.data = analogRead(water_pin);
 
 //   // Collecting compass input vector
  nh.loginfo("bouta read compass");
    compass.read();
-//   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
+   nh.loginfo("just read compass");
+   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
  
 //   pub_wind.publish(&wind_msg);
 //   pub_water.publish(&water_msg);
-//   pub_compass.publish(&compass_msg);
+   nh.loginfo("publishing");
+  pub_compass.publish(&compass_msg);
 
-//   nh.loginfo("about to spin");
-  nh.spinOnce();  
+// //   nh.loginfo("about to spin");
+  nh.spinOnce();    
 }

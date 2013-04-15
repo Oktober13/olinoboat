@@ -45,7 +45,7 @@ unsigned long timer;
 void loop() {
   if ( (millis() - timer) > 50){
     nh.loginfo("read");
-//    compass.read();
+   compass.read();
     nh.spinOnce();
 //  compass_msg.data = compass.heading((LSM303::vector){0,-1,0});
     pub_compass.publish(&compass_msg);
