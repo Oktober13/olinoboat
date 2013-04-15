@@ -22,12 +22,12 @@ while not rospy.is_shutdown():
 	fast_behavior = go_fast.suggested_heading
 	short_behavior = go_short.suggested_heading
         desired_behavior = [fast*short for fast, short in zip(fast_behavior, short_behavior)]
-	rospy.loginfo("think.py suggested heading is:")
 	desired_heading = desired_behavior.index(max(desired_behavior))
 	if desired_heading > 180: desired_heading -= 360
 	think_command_pub.publish(desired_heading)
-	rospy.loginfo(str(desired_heading))
-	fig = plt.figure()
+	rospy.loginfo("think.py suggested heading is: %f" %desired_heading)
+
+#	fig = plt.figure()
 	
 	plt1 = plt.subplot(1, 3, 1, projection='polar')
 	plt1.set_theta_zero_location('N')
@@ -37,7 +37,7 @@ while not rospy.is_shutdown():
 	plt2.set_theta_zero_location('N')
 	plt2.set_theta_direction(-1)
 
-	plt3= plt.subplot(1, 3, 3, projection='polar')
+	plt3 = plt.subplot(1, 3, 3, projection='polar')
 	plt3.set_theta_zero_location('N')
 	plt3.set_theta_direction(-1)
 
@@ -48,5 +48,5 @@ while not rospy.is_shutdown():
 	plt.subplot(1, 3, 3)
 	plt.polar(x, short_behavior)
 
-	plt.show
+	plt.show()
 

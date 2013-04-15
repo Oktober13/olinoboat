@@ -28,6 +28,7 @@ class MissionGoal():
 
     def __update_goal_point(self, data):
         
+	rospy.loginfo("updating gps")
         boat_x = self.sensors.gps.current_x     # Data type: Float64
         boat_y = self.sensors.gps.current_y     # Data type: Float64
 
@@ -54,10 +55,9 @@ def init(node):
     sensors.init(node)
 
     # waypoints = yaml.yaml_parse(file)
-    #waypoints = '[[1 , 251536], [2, 2], [5, 5]]'esired_heading
+    waypoints = '[[2 , 251537], [2, 2], [5, 5]]'
 
     mission_goal = MissionGoal(sensors, waypoints, node)
-    rospy.Subscriber("Waypoint", String, mission_goal.__update_goal_point)
 
 
 

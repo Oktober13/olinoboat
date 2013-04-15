@@ -18,7 +18,7 @@ wind_sensor_offset.publish(UInt16(30)) # the 0 degree point
 
 while not rospy.is_shutdown():
 	# leak_detector.publish(UInt16(0)) # no leak
-	compass.publish(UInt16(70)) # 70 degree heading
+	compass.publish(UInt16(140)) # 90 degree heading
 	GPS_lat.publish(Float64(42.00000011)) # Lake Waban
 	GPS_lon.publish(Float64(-71.00000011)) # Lake Waban
 	wind_sensor_pwm.publish(UInt16(1000)) # a random angle in the range 0-1028
