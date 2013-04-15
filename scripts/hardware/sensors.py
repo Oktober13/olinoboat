@@ -4,7 +4,7 @@ import rospy
 from pylab import *
 from std_msgs.msg import UInt16
 from std_msgs.msg import Float64
-import pprint as pp
+# import pprint as pp
 
 compass=None
 gps=None
@@ -28,12 +28,12 @@ class WindAngle():
         rospy.loginfo("sensors.py: WindAngle initialized")
 
     def __set_offset(self, data):
-        rospy.loginfo("sensors.py: encoder send offset signal: %i" % (data.data))
+        rospy.loginfo("sensors.py: wind encoder send offset signal: %i" % (data.data))
         self.offset = data.data
 
     def __pwm_to_wind_angle(self, data):
-        rospy.loginfo("sensors.py: encoder sent pwm signal: %i" % (data.data))
-        pp.pprint(data)
+        rospy.loginfo("sensors.py: wind encoder sent pwm signal: %i" % (data.data))
+        # pp.pprint(data)
         phigh = data.data
         self.angle = (360*(phigh - self.__offset)/1024.)%360
         self.callback()     

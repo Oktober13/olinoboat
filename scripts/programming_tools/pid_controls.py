@@ -26,7 +26,7 @@ class PID:
 		self.Integrator_max=Integrator_max
 		self.Integrator_min=Integrator_min
 
-		self.set_point=0.0
+		self.set_point= 0.0
 		self.error=0.0
 
 	def update(self,current_value):
