@@ -21,7 +21,7 @@ while not rospy.is_shutdown():
 	compass.publish(UInt16(70)) # 70 degree heading
 	GPS_lat.publish(Float64(42.00000011)) # Lake Waban
 	GPS_lon.publish(Float64(-71.00000011)) # Lake Waban
-	wind_sensor_pwm.publish(UInt16(800)) # a random angle in the range 0-1028
+	wind_sensor_pwm.publish(UInt16(1000)) # a random angle in the range 0-1028
 	
 	rospy.sleep(3)
 

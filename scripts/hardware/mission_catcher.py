@@ -10,8 +10,7 @@ class MissionGoal():
 
     def __init__(self, node = 0):
         self.callback = self.__default_callback
-        self.current_goal = [0, 0]
-
+        self.current_goal = [2, 251535]   #TODO change back to [0,0]
         #initialize node if not running from the think code
         if node == 0:
             rospy.init_node('data_listener', anonymous=False)
