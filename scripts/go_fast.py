@@ -52,3 +52,4 @@ def go_fast_cb():
 def init(think_node):
     sensors.init(think_node)
     sensors.wind_angle.set_callback(go_fast_cb)
+

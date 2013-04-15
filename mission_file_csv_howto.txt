@@ -1,0 +1,18 @@
+Inside of mission_file.csv you should see something like
+
+1, 0, 42, -71
+1, 0, 42.000000001, -71.0000000001
+
+This corresponds to
+
+'type of mission', 'information passing parameter', 'goal_latitude', 'goal_longitude'
+
+In the first pass of sailbot code, we will be doing a simple waypoint follower, which will correspond with 'type of mission' = 1. For a simple waypoint follower, we won't need to pass any information, so the 'information passing parameter' will be set to 0 and not referenced.
+
+The reason mission_file.csv has these unused parameters, instead of just GPS waypoints, is so that in the future new behaviors can be created. If you wanted to make the boat round a buoy, for example, you have two options. You could
+	1) make three waypoints around the buoy and have the boat follow them using the waypoint following mission
+	2) create a new behavior (round buoy) that uses the mission_file.csv info in another way
+		- For example, you could pass the line '2, 1, 42.000000001, -71.0000000001'
+		- The '2' (type of mission) could mean you are doing a 'round buoy' mission instead of a 'go to waypoint' mission
+		- The '1' (information passing parameter) could mean 'round the buoy clockwise' and another value, perhaps 2, could mean 'round the buoy clockwise'
+		- Now inside of _______ [whichever file we use to interpret our missions] you can write code that will take the single mission_file.csv line and reinterpret it into 3 correct waypoints
