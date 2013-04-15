@@ -114,30 +114,31 @@ void setup()
 
 void loop()                     // run over and over again
 {
-//   bool newData = false;
+   bool newData = false;
 //   for (unsigned long start = millis(); millis() - start < 1000;)
 //   {;
 //   while (nss.available())
 //   {
-//     int c = nss.read();
-//     nh.loginfo("new gps data");
-//     if (gps.encode(c))
-//     {
-//       newData = true;
-//       // process new gps info here
-//     }
-//   }
-//   }
+     int c = nss.read();
+//     nh.loginfo("testing logging");
+     if (gps.encode(c))
+     {
+       newData = true;
+       // process new gps info here
+     }
+ //  }
+ //  }
   
-//   if (newData){
-//     gps.f_get_position(&flat, &flon, &age);
-//     flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
-//     gps_lat_msg.data = flat;
-//     flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
-//     gps_lon_msg.data = flon; 
-//     pub_gps_lat.publish(&gps_lat_msg);
-//     pub_gps_lon.publish(&gps_lon_msg);
-//   }
+   if (newData){
+     nh.loginfo("getting position now");
+     gps.f_get_position(&flat, &flon, &age);
+     flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
+     gps_lat_msg.data = flat;
+     flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
+     gps_lon_msg.data = flon; 
+     pub_gps_lat.publish(&gps_lat_msg);
+     pub_gps_lon.publish(&gps_lon_msg);
+   }
 
 //   // Collecting the encoder PWM signal for relative wind direction
 //   wind_msg.data = pulseIn(encoder_pin, HIGH);
@@ -146,7 +147,8 @@ void loop()                     // run over and over again
 // //  water_msg.data = analogRead(water_pin);
 
 //   // Collecting compass input vector
-//   compass.read();
+ nh.loginfo("bouta read compass");
+   compass.read();
 //   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
  
 //   pub_wind.publish(&wind_msg);
