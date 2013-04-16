@@ -15,7 +15,7 @@ import time
 import matplotlib.pyplot as plt
 from math import pi
 
-# Imports necessary functions
+# Imports necessary sailbot code
 import go_fast
 import go_short
 
