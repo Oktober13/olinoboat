@@ -69,9 +69,10 @@ def interpret_mission_file(mission_list):
 
 
 def read_mission_csv():
-	# This code expects to read mission_file.csv to be found in the olinoboat folder
 	filename = "mission_file.csv"
 
+	# This code expects to read mission_file.csv to be found two levels up from the file it is in
+	# As of 04/14/2013, this code is stored in the folder 'programming_tools', and olinoboat is two levels up
 	basepath = os.path.dirname(os.path.abspath(__file__))
 	filepath = os.path.abspath(os.path.join(basepath, "..", "..", filename))
 
