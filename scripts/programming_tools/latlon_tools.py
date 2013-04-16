@@ -1,6 +1,18 @@
 #!/usr/bin/env python
+
+# lat_lon_to_UTM() takes latititude and longitude, then returns UTM values
+# latlon_tools is called by sensors.py and read_mission.py
+#
+# You can find details on UTM here: http://en.wikipedia.org/wiki/Universal_Transverse_Mercator_coordinate_system
+# We think UTM is more useful than lat/lon because it is in units of meters, and the units don't change as you go north and south (unlike longitude)
+
+# Imports necessary libraries
 from pylab import *
 
+# lat_lon_to_UTM expects to get a list of [latitude, longitude]
+# lat_lon_to_UTM returns ([x, y], UTM_zone, southhemi)
+#       sailbot code only ever uses [x, y], but you could use UTM_zone and southhemi to do long distance navigation
+#       See wikipedia on UTM for what UTM_zone and southhemi are for
 def lat_lon_to_UTM(ll):
 
     lat = ll[0]
@@ -12,10 +24,8 @@ def lat_lon_to_UTM(ll):
 
     UTMScaleFactor = 0.9996
 
-    #Ccalculate the UTM zone
+    #Calculate the UTM zone
     zone = floor(((lon + 180.0) / 6) + 1)
-
-    #TODO: Flags invalid GPS points?
 
     # Convert lat and lon to radians
     lat = lat/180*pi
