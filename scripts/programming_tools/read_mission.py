@@ -1,14 +1,29 @@
 #!/usr/bin/env python
+
+# read_mission.py provides functions that are called by mission.py
+#
+# The functions in read_mission.py look for a mission_list.csv file in the olinoboat folder, then interpret the missions found there
+# More details on the mission_list.csv file can be found in mission_list_csv_howto.txt (in the olinoboat folder)
+#
+# Future note - the interpret_mission_file() function can be edited to give new functionality
+#		As of 04/14/2013, interpret_mission_file() can take a GPS point and set it as a waypoint (mission type 1)
+#		As of 04/14/2013, interpret_mission_file() can take a buoy GPS point, then make 3 waypoints around the buoy so that the boat will round it (mission type 2)
+# 		The power of interpret_mission_file() is that you can use simple user inputs (a single GPS point) to make a complex mission. Buoy rounding is a simple example of that
+
+# Imports necessary libraries
 import csv
 import os.path
 from ast import literal_eval
-from programming_tools import latlon_tools
 from math import atan2, pi, sin, cos
+
+# Imports necessary sailbot code
+from programming_tools import latlon_tools
+
 
 def interpret_mission_file(mission_list):
 	boat_goal_points = []
-	for i in range(len(mission_list)):		# The format for a mission should be ['type of mission', 'information passing parameter', 'goal_latitude', 'goal_longitude']
-		mission = mission_list[i]
+	for i in range(len(mission_list)):
+		mission = mission_list[i]			# The format for a mission should be ['type of mission', 'information passing parameter', 'goal_latitude', 'goal_longitude']
 		if mission[0] == 1:					# 'type of mission' = 1 means do waypoint following
 			goal_UTM = latlon_tools.lat_lon_to_UTM([float(mission[2]), float(mission[3])])
 			goal_x_y = goal_UTM[0]
@@ -44,16 +59,17 @@ def interpret_mission_file(mission_list):
 			boat_goal_points.append(goal3_x_y)
 
 		# elif mission[0] == 3:		# New people can define their own mission interpretations here
-			# do stuff
+			# goal_x_y = [mission[2] + your stuff, mission[3] + your stuff]
 			# boat_goal_points.append(goal_x_y)
 
 		else:
-			print str(mission) + " has an unknown type or mission"
+			print str(mission) + " has an unknown type of mission"
 
 	return boat_goal_points
 
+
 def read_mission_csv():
-	# This code expects mission_file.csv to be found in the olinoboat folder
+	# This code expects to read mission_file.csv to be found in the olinoboat folder
 	filename = "mission_file.csv"
 
 	basepath = os.path.dirname(os.path.abspath(__file__))
@@ -62,6 +78,7 @@ def read_mission_csv():
 	mission_list = []
 	
 	try:
+		# Reads the csv file and turns it into lists of numbers
 		with open(filepath, 'rb') as csvfile:
 			mission_reader = csv.reader(csvfile, delimiter=',')
 			for row in mission_reader:
