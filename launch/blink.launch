@@ -9,6 +9,7 @@
 
     <node pkg="olinoboat" type="go_fast.py" name="go_fast" machine="mo" output="screen"></node> 
 
+  <node pkg="olinoboat" type="mock_sensor_publishers.py" name="mock_sensor_publishers" machine="mo" output="screen"></node> 
 
     
   -->   
@@ -19,6 +20,6 @@
 
   <node pkg="olinoboat" type="mission_publish.py" name="mission_publisher" machine="mo" output="screen"></node>
 
-  <node pkg="olinoboat" type="mock_sensor_publishers.py" name="mock_sensor_publishers" machine="mo" output="screen"></node> 
+
 
 </launch>

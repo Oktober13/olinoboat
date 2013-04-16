@@ -16,12 +16,13 @@
 #include <ros.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Float64.h>
 #include <Wire.h>
 #include <LSM303.h>
 #include <Arduino.h>
 #include <Servo.h>
 
-SoftwareSerial nss(3, 2);
+SoftwareSerial nss(3, 4);
 TinyGPS gps;
 
 
@@ -36,8 +37,8 @@ std_msgs:: UInt16 water_msg; // The water sensor outputs a value for its voltage
 std_msgs:: UInt16 compass_msg; // The compass outputs a 16 bit unsigned integer from 0 at North clockwise to 360 if you've calibrated.
 std_msgs:: UInt16 servo1_msg;
 std_msgs:: UInt16 servo2_msg;
-std_msgs:: UInt16 gps_lat_msg;
-std_msgs:: UInt16 gps_lon_msg;
+std_msgs:: Float64 gps_lat_msg;
+std_msgs:: Float64 gps_lon_msg;
 
 
 float flat;
@@ -48,7 +49,7 @@ int servo2_pin = 10;
 int water_pin = A1;
 unsigned long duration;
 int water_voltage = 0;
-
+bool newData = false;
 
 
 
@@ -63,8 +64,8 @@ void servo2_cb( const std_msgs::UInt16& cmd_msg2){ //function servo2_cb requires
   servo2.write(cmd_msg2.data); //set servo angle, should be from 0-180
 }
 
-ros::Subscriber<std_msgs::UInt16> sub1("servo1", servo1_cb);
-ros::Subscriber<std_msgs::UInt16> sub2("servo2", servo2_cb);
+ros::Subscriber<std_msgs::UInt16> sub1("rudder", servo1_cb);
+ros::Subscriber<std_msgs::UInt16> sub2("sail", servo2_cb);
 
 ros::Publisher pub_wind("pwm_duration", &wind_msg);
 ros::Publisher pub_water("leak", &water_msg);
@@ -81,6 +82,9 @@ void setup()
   
   servo1.attach(servo1_pin); //attach servo1 to servo1_pin
   servo2.attach(servo2_pin); //attach servo2 to servo2_pin
+
+  // Set up GPS
+  nss.begin(4800);
 
   // Set up Compass
   Wire.begin();
@@ -117,49 +121,57 @@ unsigned long timer;
 
 void loop()                     // run over and over again
 {
-  bool newData = false;
-// //   for (unsigned long start = millis(); millis() - start < 1000;)
-// //   {;
-// //   while (nss.available())
-// //   {
-     // int c = nss.read();
-// //     nh.loginfo("testing logging");
-     // if (gps.encode(c))
-     // {
-     //   newData = true;
-     //   // process new gps info here
-     // }
-//  //  }
-//  //  }
-  
-   // if (newData){
-   //   nh.loginfo("getting position now");
-   //   gps.f_get_position(&flat, &flon, &age);
-   //   flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
-   //   gps_lat_msg.data = flat;
-   //   flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
-   //   gps_lon_msg.data = flon; 
-   //   pub_gps_lat.publish(&gps_lat_msg);
-   //   pub_gps_lon.publish(&gps_lon_msg);
-   // }
-
+  nh.loginfo("begin");
+/*  for (unsigned long start = millis(); millis() - start < 1000;)
+  {;
+    while (nss.available())
+    {
+      int c = nss.read();
+      nh.loginfo("read nss");
+      if (gps.encode(c))
+      {
+        newData = true;
+        nh.loginfo("new data");
+        // process new gps info here
+      }
+    }
+  }
+  if (newData == false){
+    nh.loginfo("There is indeed no new data");
+  }
+*/
+//	  nh.spinOnce();
+/*  
+  if (newData){
+    nh.loginfo("getting position now");
+//    gps.f_get_position(&flat, &flon, &age);
+    flat = 0.5;
+    flon = 1.3;
+//    flat = TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6;
+    gps_lat_msg.data = flat;
+//    flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6;
+    gps_lon_msg.data = flon; 
+    pub_gps_lat.publish(&gps_lat_msg);
+    pub_gps_lon.publish(&gps_lon_msg);
+    }
+*/
 //   // Collecting the encoder PWM signal for relative wind direction
-  // wind_msg.data = pulseIn(encoder_pin, HIGH);
+   wind_msg.data = pulseIn(encoder_pin, HIGH);
   
 //   // Collecting water sensor voltage
   // water_msg.data = analogRead(water_pin);
 
 //   // Collecting compass input vector
- nh.loginfo("bouta read compass");
-   compass.read();
-   nh.loginfo("just read compass");
-   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
+  nh.loginfo("bouta read compass");
+  compass.read();
+  nh.loginfo("just read compass");
+  compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
  
-//   pub_wind.publish(&wind_msg);
+  pub_wind.publish(&wind_msg);
 //   pub_water.publish(&water_msg);
-   nh.loginfo("publishing");
+  nh.loginfo("publishing");
   pub_compass.publish(&compass_msg);
 
-// //   nh.loginfo("about to spin");
+  nh.loginfo("about to spin");
   nh.spinOnce();    
 }

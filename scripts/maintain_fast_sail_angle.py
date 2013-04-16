@@ -25,7 +25,7 @@ def sail_update_on_wind_direction_change():
 
 	points_of_sail = [0, 45, 60, 90, 135, 180]    
 	sail_points = [0, 0, 15, 40, 60, 80]
-	sail_angle = pl.interp(rel_angle, points_of_sail,sail_points)
+	sail_angle = pl.interp(wind_angle, points_of_sail,sail_points)
 	rospy.loginfo("fast_sail_angle.py: sail angle should be:" + str(sail_angle))
 
 	# Sets the sail servo

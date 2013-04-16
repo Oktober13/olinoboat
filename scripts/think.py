@@ -41,7 +41,7 @@ while not rospy.is_shutdown():
 	desired_heading = desired_behavior.index(max(desired_behavior))
 	if desired_heading > 180: desired_heading -= 360
 	
-	think_command_pub.publish(Int16(desired_heading)))
+	think_command_pub.publish(Int16(desired_heading))
 	rospy.loginfo("think.py chose this heading: %f degrees" %desired_heading)
 
 	if plot_heading == True:
