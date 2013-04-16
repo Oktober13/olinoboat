@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# mission.py contains a class that is initialized by another piece of code
+# mission.py contains a class that needs to be initialized by another piece of code to use
 # mission.py is only currently (04/14/2013) only initialized by mission_publish.py
 #
 #       This class, MissionGoal, constantly checks the boat position against the list of missions the boat wants to accomplish
