@@ -1,9 +1,21 @@
 #!/usr/bin/env python
+
+# mission.py contains a class that is initialized by another piece of code
+# mission.py is only currently (04/14/2013) only initialized by mission_publish.py
+#
+#       This class, MissionGoal, constantly checks the boat position against the list of missions the boat wants to accomplish
+#            Whenever the boat gets within 'success_dis' meters (this is changeable below) the MissionGoal sets the next GPS Waypoint as the current goal
+#       When it is first initialized, MissionGoal will read a file called mission_file.csv that sets the string of missions that boat should accomplish
+#       More details on how to set up missions can be found in mission_file_csv_howto.txt in the olinoboat folder
+
+# Imports necessary libraries
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import Float64, String
-from hardware import sensors
 from math import hypot
+
+# Imports necessary sailbot code
+from hardware import sensors
 from programming_tools import read_mission
 
 mission_goal=None
@@ -14,7 +26,10 @@ class MissionGoal():
         self.callback = self.__default_callback
         self.sensors = sensors
         self.success_dis = 2    # Meters
-        self.goals = waypoints
+        self.goals = waypoints 
+            # In original sailbot code, the string of waypoints never changes once it is set at the beginning
+            # It would be possible to make the boat add or delete waypoints mid-run, depending on conditions, by editing the list self.goals
+            # This could be very useful or very painful, depending on how you implement it
         self.index = 0
         self.current_goal = [0, 0]
 
@@ -53,12 +68,10 @@ def init(node):
     global mission_goal
     sensors.init(node)
 
+    # This reads the list of waypoint from a file called mission_file.csv in the folder olinoboat
     waypoints = read_mission.read_mission_csv()
-    # waypoints = '[[2 , 251537], [2, 2], [5, 5]]'
 
     mission_goal = MissionGoal(sensors, waypoints, node)
-
-
 
 
 if __name__ == '__main__':
