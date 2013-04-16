@@ -1,0 +1,9 @@
+# creates a loop that calls other code
+# catching a publisher and storing the information
+# supplies functions to other routines
+
+In other documentation we need to:
+	Explain our arbiter
+	Explain our binary inhibitor/exciter
+	Explain our normal distribution suggestion
+	Explain our sail position lookup table
