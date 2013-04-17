@@ -2,7 +2,6 @@
 
 # This class is currently unused
 
-
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from ast import literal_eval

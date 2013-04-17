@@ -1,11 +1,24 @@
 #!/usr/bin/env python
+
+# sensors.py contains a class that needs to be initialized by another piece of code to use
+# More information about python 'classes' here: http://www.tutorialspoint.com/python/python_classes_objects.htm
+#
+# sensors.py is initialized by every piece of code that needs the sensor data
+#       04/14/2013 - Files that use sensors.py
+#               mission.py -- go_fast.py -- go_short.py -- maintain_fast_sail_angle.py -- point_boat_at_target.py
+#
+# The point of using classes like this is that every time the sensor data is published, the data is caught in this class (once intiailized) and then can be used
+#       See examples in every piece of code that imports sensors.py
+
+# Imports necessary libraries
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from pylab import *
 from std_msgs.msg import UInt16
 from std_msgs.msg import Float64
+
+# Imports necessary sailbot code
 from programming_tools import latlon_tools
-# import pprint as pp
 
 compass=None
 gps=None
@@ -34,7 +47,6 @@ class WindAngle():
 
     def __pwm_to_wind_angle(self, data):
         rospy.loginfo("sensors.py: wind encoder sent pwm signal: %i" % (data.data))
-        # pp.pprint(data)
         phigh = data.data
         self.angle = (360*(phigh - self.__offset)/1024.)%360
         self.callback()     

@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+# point_boat_at_target.py changes the rudder position every time the compass heading updates
+# It is dependent on sensors.py for the compass output, and think.py for the direction the boat should be heading
+# This code outputs to servos.py
+#
+# At a high level, as of 04/14/2013, this code tries to use the rudder to point the boat in the intended direction using PID control (more explanation below)
+
 # Imports necessary libraries
 import roslib; roslib.load_manifest('olinoboat')
 import rospy

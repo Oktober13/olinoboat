@@ -11,7 +11,7 @@
 # 		The power of interpret_mission_file() is that you can use simple user inputs (a single GPS point) to make a complex mission. Buoy rounding is a simple example of that
 
 # Imports necessary libraries
-import csv
+import csv 			# See more csv information here: http://docs.python.org/2/library/csv.html#csv-fmt-params
 import os.path
 from ast import literal_eval
 from math import atan2, pi, sin, cos
