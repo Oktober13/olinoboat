@@ -91,7 +91,9 @@ void setup()
   compass.init();
   compass.enableDefault();
   compass.setTimeout(100);
-  pinMode(9, INPUT);
+
+  // Set up Encoder
+  pinMode(encoder_pin, INPUT);
 
   // Calibration values. Use the Calibrate example program to get the values for
   // your compass.
