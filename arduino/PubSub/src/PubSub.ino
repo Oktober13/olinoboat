@@ -123,29 +123,22 @@ unsigned long timer;
 
 void loop()                     // run over and over again
 {
-  nh.loginfo("begin");
 /*  for (unsigned long start = millis(); millis() - start < 1000;)
   {;
     while (nss.available())
     {
       int c = nss.read();
-      nh.loginfo("read nss");
       if (gps.encode(c))
       {
         newData = true;
-        nh.loginfo("new data");
-        // process new gps info here
       }
     }
   }
-  if (newData == false){
-    nh.loginfo("There is indeed no new data");
-  }
+
 */
 //	  nh.spinOnce();
 /*  
   if (newData){
-    nh.loginfo("getting position now");
 //    gps.f_get_position(&flat, &flon, &age);
     flat = 0.5;
     flon = 1.3;
@@ -164,16 +157,14 @@ void loop()                     // run over and over again
   // water_msg.data = analogRead(water_pin);
 
 //   // Collecting compass input vector
-  nh.loginfo("bouta read compass");
   compass.read();
-  nh.loginfo("just read compass");
   compass_msg.data = compass.heading((LSM303::vector){0,-1,0});  
  
   pub_wind.publish(&wind_msg);
 //   pub_water.publish(&water_msg);
-  nh.loginfo("publishing");
   pub_compass.publish(&compass_msg);
 
-  nh.loginfo("about to spin");
+nh.loginfo("alaMode: Completed one loop on the alaMode, about to spin again")
+
   nh.spinOnce();    
 }
