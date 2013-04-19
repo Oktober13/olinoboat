@@ -6,7 +6,7 @@
 #		think.py takes the outputs of go_fast and go_short, multiplies them together, and then chooses the strongest element as the heading to go to
 #		See documentation for a more in-depth explanation of the arbiter
 
-
+#hello Eric
 # Imports necessary libraries
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
