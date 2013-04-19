@@ -72,4 +72,3 @@ def inhibit_bad_headings(inhibited_array, wind_heading):
 def init(think_node):
     sensors.init(think_node)
     sensors.wind_angle.set_callback(go_fast_cb)
-

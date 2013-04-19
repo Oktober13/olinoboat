@@ -9,7 +9,7 @@
 # Imports necessary libraries
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
-from std_msgs.msg import UInt16
+from std_msgs.msg import Int16
 
 # Imports necessary sailbot code
 from programming_tools import pid_controls
@@ -53,7 +53,7 @@ sensors.init(current_node)
 servos.init(current_node)
 
 # This ties change_desired_heading() to the desired_heading() topic (this is published to by mission_publish.py)
-rospy.Subscriber("desired_heading", UInt16, change_desired_heading)
+rospy.Subscriber("desired_heading", Int16, change_desired_heading)
 
 # This ties point_boat_at_target_on_compass_change() to a change in compass data
 sensors.compass.set_callback(point_boat_at_target_on_compass_change)
