@@ -164,7 +164,7 @@ void loop()                     // run over and over again
 //   pub_water.publish(&water_msg);
   pub_compass.publish(&compass_msg);
 
-nh.loginfo("alaMode: Completed one loop on the alaMode, about to spin again")
+nh.loginfo("alaMode: Completed one loop on the alaMode, about to spin again");
 
   nh.spinOnce();    
 }
