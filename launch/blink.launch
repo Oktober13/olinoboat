@@ -18,7 +18,7 @@
 
   <node pkg="olinoboat" type="point_boat_at_target.py" name="point_boat_at_target" output="screen"></node> 
 
-  <node pkg="olinoboat" type="boat_brain.py" name="think" output="screen"></node> 
+  <node pkg="olinoboat" type="think.py" name="think" output="screen"></node> 
 
   <node pkg="olinoboat" type="mission_publish.py" name="mission_publisher" output="screen"></node>
 
