@@ -28,8 +28,8 @@ class Servo:
         self.set_position(0)
         self.current_position = 0
 
-    def set_position(self,degrees,):
-        self.__publisher.publish(degrees)
+    def set_position(self,degrees):
+        self.__publisher.publish(UInt16(degrees))
         rospy.loginfo("servos.py: %s moved to %i degrees" % (self.name, degrees))
         self.current_position = degrees
 
