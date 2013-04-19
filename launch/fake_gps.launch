@@ -1,5 +1,0 @@
-<launch>
-
-  <node pkg="olinoboat" name="fake_gps_data" type="fake_gps_data.py"/>
-
-</launch>

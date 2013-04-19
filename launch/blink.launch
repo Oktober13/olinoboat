@@ -10,13 +10,14 @@
     <node pkg="olinoboat" type="go_fast.py" name="go_fast" machine="mo" output="screen"></node> 
 
   <node pkg="olinoboat" type="mock_sensor_publishers.py" name="mock_sensor_publishers" machine="mo" output="screen"></node> 
-
     
   -->   
 
   <node pkg="olinoboat" type="maintain_fast_sail_angle.py" name="maintain_fast_sail_position" machine="mo" output="screen"></node> 
 
-  <node pkg="olinoboat" type="think.py" name="think" machine="mo" output="screen"></node> 
+  <node pkg="olinoboat" type="maintain_fast_sail_angle.py" name="maintain_fast_sail_position" machine="mo" output="screen"></node> 
+
+  <node pkg="olinoboat" type="boat_brain.py" name="think" machine="mo" output="screen"></node> 
 
   <node pkg="olinoboat" type="mission_publish.py" name="mission_publisher" machine="mo" output="screen"></node>
 
