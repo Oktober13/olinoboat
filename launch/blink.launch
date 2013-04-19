@@ -23,7 +23,7 @@
   <node pkg="olinoboat" type="mission_publish.py" name="mission_publisher" output="screen"></node>
 
   <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen" respawn ="true">
-    <param name="~port" value="/dev/ttyACM0" />
+    <param name="~port" value="/dev/ttyS0" />
     <param name="~baud" value="57600" />
   </node>
 
