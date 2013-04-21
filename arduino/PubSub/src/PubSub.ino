@@ -52,7 +52,6 @@ int water_voltage = 0;
 bool newData = false;
 
 
-
 // Define callback functions for subscribers (what to do when a new signal comes in)
   // Callback response for servo1
 void servo1_cb( const std_msgs::UInt16& cmd_msg1){	//function servo1_cb references the servo command
@@ -76,7 +75,6 @@ ros::Publisher pub_gps_lon("gps_lon", &gps_lon_msg);
 void setup()  
 {
   // Set up Arduino hardware pins
-  pinMode(encoder_pin, INPUT); // set encoder_pin to input
   pinMode(water_pin, INPUT); // set water_pin to input
   pinMode(13, OUTPUT);
   
@@ -110,7 +108,6 @@ void setup()
   nh.advertise(pub_gps_lon);
 
 
-
   // Subscribe to the node to the servo control topics
   nh.subscribe(sub1);
   nh.subscribe(sub2);
@@ -119,6 +116,8 @@ void setup()
   delay(50);
 }
 unsigned long timer;
+
+
 
 
 void loop()                     // run over and over again
