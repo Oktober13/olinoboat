@@ -1,0 +1,16 @@
+<launch>
+
+  <node pkg="olinoboat" type="init_sensors.py" name="init_sensors" output="screen"></node> 
+
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen" respawn ="true">
+    <param name="~port" value="/dev/ttyS0" />
+    <param name="~baud" value="57600" />
+  </node>
+
+  <!--
+
+  <node pkg="rosbag" type="rosbag" name="rosbag_record_diag", args="record -O /compass_heading /wind_angle_pub /x_position_UTM /y_position_UTM > 
+
+  -->
+
+</launch>

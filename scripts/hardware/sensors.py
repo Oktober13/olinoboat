@@ -48,7 +48,7 @@ class WindAngle():
     def __pwm_to_wind_angle(self, data):
         rospy.loginfo("sensors.py: wind encoder sent pwm signal: %i" % (data.data))
         phigh = data.data
-        self.angle = (360*(phigh - self.__offset)/1024.)%360
+        self.angle = (360*(phigh - self.__offset)/1024)%360
         self.callback()     
 
     def set_callback(self,callback):
