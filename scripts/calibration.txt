@@ -1,0 +1,12 @@
+zmax 255.000000
+zmin 0.000000
+pwm_offset 0.000000
+rudder0 90.000000
+xmin 0.000000
+ymin 0.000000
+ymax 255.000000
+ruddermin 0.000000
+sailmin 0.000000
+xmax 255.000000
+sailmax 180.000000
+ruddermax 180.000000

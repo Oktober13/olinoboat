@@ -25,15 +25,44 @@ class Servo:
 
         self.name = name    
         self.__publisher = rospy.Publisher(self.name, UInt16)
-        self.set_position(0)
+        #self.set_position(0)
         self.current_position = 0
+        self.servomin = 0
+        self.servomax = 180
+	self.degmin = 45.	#set the bounds of the signal you send to the servo (45 to 135 for the rudder(?) , ?? to ?? for the sail)
+	self.degmax = 135
+	self.get_offset()
+
+    def get_offset(self):
+        lines = open("../calibration.txt").read().splitlines()
+        var_dic = {}
+        for line in lines:
+            variable, value = line.split(' ')
+            var_dic[variable] = value
+        if self.name == rudder:
+            if "ruddermin" in var_dic:
+                self.servomin = var_dic['ruddermin']
+            if "ruddermax" in var_dic:
+                self.servomax = var_dic['ruddermax']
+        if self.name == sail:
+            if "sailmin" in var_dic:
+                self.servomin = var_dic['sailmin']
+            if "sailmax" in var_dic:
+                self.servomax = var_dic['sailmax']
+	
 
     def set_position(self,degrees):
         s = type(degrees)
-        rospy.loginfo("servos.py:  The degrees variable is %i, type is %s" %(degrees, s))
-        self.__publisher.publish(UInt16(degrees))
-        rospy.loginfo("servos.py: %s moved to %i degrees" % (self.name, degrees))
-        self.current_position = degrees
+        #rospy.loginfo("servos.py:  The degrees variable is %i, type is %s" %(degrees, s))
+        #self.__publisher.publish(UInt16(degrees))
+	servo_cmd = self.angle_to_command(degrees)
+        #rospy.loginfo("servos.py: %s moved to %i degrees" % (self.name, servo_cmd))
+        self.current_position = servo_cmd
+
+    def angle_to_command(self,degrees):
+        cmd = float(degrees-self.degmin) * ( (self.servomax-self.servomin)/(self.degmax-self.degmin) ) + self.servomin
+        print cmd
+        return cmd
 
 def init(node):
     global sail 

@@ -5,7 +5,7 @@
 #		You run set_offset.py when the wind sensor is pointing directly forward, and the think code will treat that as the new 'zero' for the wind sensor
 
 # Imports necessary libraries
-import roslib; roslib.load_manifest('beginner_tutorials')
+import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import UInt16
 

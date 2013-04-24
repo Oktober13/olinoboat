@@ -71,6 +71,6 @@ class teleop():
 
 if __name__ == "__main__":
 	t=teleop()
-	t.verbose = 0
+	t.verbose = 1
 	t.get_user_input()
-	rospy.sleep(2)
+	rospy.spin()

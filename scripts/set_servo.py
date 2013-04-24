@@ -5,9 +5,10 @@
 
 
 # Imports necessary libraries
-import roslib; roslib.load_manifest('beginner_tutorials')
+import roslib; roslib.load_manifest('olinoboat')
 import rospy
-from std_msgs.msg import UInt16
+from std_msgs.msg import String
+#from std_msgs.msg import Uint16
 import teleop
 
 def ask_user():
@@ -29,6 +30,19 @@ def ask_user():
 	sailmax = sail
 	print "rudder (min, 0, max): (%f, %f, %f)" %(ruddermin, rudder0, ruddermax)
 	print "sail (min, max): (%f, %f)" %(sailmin, sailmax)
+	
+	servo_offsets = str(ruddermin, rudder0, ruddermax, sailmin, sailmax)
+	servo_offset_publisher = rospy.Publisher("servo_offsets", String, latch = True)
+	"""rudder_min_publisher = rospy.Publisher("rudder_min", UInt16, latch = True)
+	rudder_min_publisher.publish(ruddermin)
+	rudder_0_publisher = rospy.Publisher("rudder_0", UInt16, latch = True)
+	rudder_min_publisher.publish(rudder0)
+	rudder_max_publisher = rospy.Publisher("rudder_max", UInt16, latch = True)
+	rudder_max_publisher.publish(ruddermax)
+	sail_min_publisher = rospy.Publisher("sail_min", UInt16, latch = True)
+	sail_min_publisher.publish(sailmin)
+	sail_max_publisher = rospy.Publisher("sail_max", UInt16, latch = True)
+	sail_max_publisher.publish(sailmax)"""
 	
 
 if __name__ == "__main__":
