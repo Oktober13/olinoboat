@@ -29,11 +29,10 @@ suggested_heading = [1]*360
 
 def go_fast_cb():
     global suggested_heading
-
     angle = sensors.wind_angle.angle
 
     go_fast_pub = rospy.Publisher('go_fast_topic', String)
-    rospy.loginfo("go_fast.py:Wind sensor sent %i" %angle)
+    rospy.loginfo("go_fast.py: Wind sensor sent %f" %angle)
 
     upwind_cutoff = 50	    # Degrees
     downwind_cutoff = 10    # Degrees
@@ -41,15 +40,12 @@ def go_fast_cb():
     go_fast_heading_weights = [1 for x in range(360)]
 
     if (angle-upwind_cutoff) < 0 or (angle+upwind_cutoff) > 360:
-        print 'Case 1'
         go_fast_heading_weights = inhibit_bad_headings([[0, (angle+upwind_cutoff) % 360],[(angle-upwind_cutoff)%360, 360],\
             [((angle+180)%360)-downwind_cutoff, ((angle+180)%360)+downwind_cutoff]], go_fast_heading_weights)
     elif (((angle-180)%360)-downwind_cutoff) < 0 or (((angle+180)%360)+downwind_cutoff) > 360:
-        print 'Case 2'
         go_fast_heading_weights = inhibit_bad_headings([[0, (angle+180+downwind_cutoff) % 360],[(angle-180-downwind_cutoff)%360, 360],\
             [angle-upwind_cutoff, angle+upwind_cutoff]], go_fast_heading_weights)
     else:
-        print 'Case 3'
         go_fast_heading_weights = inhibit_bad_headings([[((angle+180)%360)-downwind_cutoff, ((angle+180)%360)+downwind_cutoff],\
             [angle-upwind_cutoff, angle+upwind_cutoff]], go_fast_heading_weights)
 
@@ -62,7 +58,7 @@ def go_fast_cb():
 # inhibit_bad_headings takes in a 360 element list (wind_heading) and a 2 element array (inhibited heading, for example [25, 30])
 # In this example, it sets the 25th, 26th, 27th, 28th, and 29th elements of windheading (wind_heading[25:30]) to 0
 def inhibit_bad_headings(inhibited_array, wind_heading):
-    print inhibited_array
+    # print inhibited_array
     for i in range(len(inhibited_array)):
         for j in range(int(round(inhibited_array[i][0])), int(round(inhibited_array[i][1]))):
             wind_heading[j] = 0

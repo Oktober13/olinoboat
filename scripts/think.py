@@ -20,7 +20,7 @@ import go_fast
 import go_short
 
 # If you set this to True, think.py will try to make a graph of where it wants you to go
-plot_heading = False
+plot_heading = True
 
 think_node = rospy.init_node("think")
 
@@ -28,22 +28,6 @@ go_fast.init(think_node)
 go_short.init(think_node)
 
 think_command_pub = rospy.Publisher('desired_heading', Int16)
-
-if plot_heading == True:
-	x = [i*pi/180 for i in range(360)]
-	plt1 = plt.subplot(1, 3, 1, projection='polar')
-	plt1.set_theta_zero_location('N')
-	plt1.set_theta_direction(-1)
-
-	plt2 = plt.subplot(1, 3, 2, projection='polar')
-	plt2.set_theta_zero_location('N')
-	plt2.set_theta_direction(-1)
-
-	plt3 = plt.subplot(1, 3, 3, projection='polar')
-	plt3.set_theta_zero_location('N')
-	plt3.set_theta_direction(-1)
-	
-	plt.show
 
 # This is the 'think loop', which redecides which direction to go every cycle
 while not rospy.is_shutdown():
@@ -58,16 +42,23 @@ while not rospy.is_shutdown():
 	rospy.loginfo("think.py chose this heading: %f degrees" %desired_heading)
 
 	if plot_heading == True:
-		plt.cla
-		plt.subplot(1, 3, 2)
-		plt.polar(x, fast_behavior)
-		plt.subplot(1, 3, 1)
+		x = [i*pi/180 for i in range(360)]
+		plt1 = plt.subplot(1, 3, 1, projection='polar')
+		plt1.set_theta_zero_location('N')
+		plt1.set_theta_direction(-1)
 		plt.polar(x, desired_behavior)
-		plt.subplot(1, 3, 3)
+		plt.title('think is a combination of go_fast and go_short')
+
+		plt2 = plt.subplot(1, 3, 2, projection='polar')
+		plt2.set_theta_zero_location('N')
+		plt2.set_theta_direction(-1)
+		plt.polar(x, fast_behavior)
+		plt.title('go_fast is 0 directly upwind and downwind')
+
+		plt3 = plt.subplot(1, 3, 3, projection='polar')
+		plt3.set_theta_zero_location('N')
+		plt3.set_theta_direction(-1)
 		plt.polar(x, short_behavior)
+		plt.title('go_short wants to go directly at the next waypoint')
 
-		plt.draw()
-
-
-
-
+		plt.show()
