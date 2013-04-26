@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import UInt16
 from std_msgs.msg import String
-
 
 def write_wrapper(var_dic):
 	first = 1
