@@ -1,5 +1,5 @@
 import curses
-import roslib; roslib.load_manifest('beginner_tutorials')
+import roslib; roslib.load_manifest('olinoboat')
 import rospy
 from std_msgs.msg import UInt16
 
