@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os.path
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
