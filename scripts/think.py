@@ -54,6 +54,7 @@ while not rospy.is_shutdown():
 		plt2.set_theta_direction(-1)
 		plt.polar(x, fast_behavior)
 		plt.title('go_fast is 0 directly upwind and downwind')
+		plt.polar(2, 1.1)
 
 		plt3 = plt.subplot(1, 3, 3, projection='polar')
 		plt3.set_theta_zero_location('N')
