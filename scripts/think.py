@@ -18,9 +18,6 @@ from math import pi
 import go_fast
 import go_short
 
-# If you set this to True, think.py will try to make a graph of where it wants you to go
-plot_heading = True
-
 rospy.sleep(10)
 print 'init think node'
 think_node = rospy.init_node("think")
@@ -41,26 +38,3 @@ while not rospy.is_shutdown():
 	
 	think_command_pub.publish(Int16(desired_heading))
 	rospy.loginfo("think.py chose this heading: %f degrees" %desired_heading)
-
-	if plot_heading == True:
-		x = [i*pi/180 for i in range(360)]
-		plt1 = plt.subplot(1, 3, 1, projection='polar')
-		plt1.set_theta_zero_location('N')
-		plt1.set_theta_direction(-1)
-		plt.polar(x, desired_behavior)
-		plt.title('think is a combination of go_fast and go_short')
-
-		plt2 = plt.subplot(1, 3, 2, projection='polar')
-		plt2.set_theta_zero_location('N')
-		plt2.set_theta_direction(-1)
-		plt.polar(x, fast_behavior)
-		plt.title('go_fast is 0 directly upwind and downwind')
-		plt.polar(2, 1.1)
-
-		plt3 = plt.subplot(1, 3, 3, projection='polar')
-		plt3.set_theta_zero_location('N')
-		plt3.set_theta_direction(-1)
-		plt.polar(x, short_behavior)
-		plt.title('go_short wants to go directly at the next waypoint')
-
-		plt.show()
