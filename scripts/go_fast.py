@@ -32,7 +32,7 @@ def go_fast_cb():
     angle = sensors.wind_angle.angle
 
     go_fast_pub = rospy.Publisher('go_fast_topic', String)
-    rospy.loginfo("go_fast.py: Wind sensor sent %f" %angle)
+#    rospy.loginfo("go_fast.py: Wind sensor sent %f" %angle)
 
     upwind_cutoff = 50	    # Degrees
     downwind_cutoff = 10    # Degrees
