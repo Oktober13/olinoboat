@@ -12,9 +12,9 @@
 
   <node pkg="olinoboat" type="mock_sensor_publishers.py" name="mock_sensor_publishers" machine="mo" output="screen"></node> 
     
-  -->
+ 
   <node pkg="olinoboat" type="init_pubsub_sketch_start_serial_node.py" name="init_pubsub_sketch_start_serial_node" output="screen"></node>
-
+  
   <node pkg="olinoboat" type="maintain_fast_sail_angle.py" name="maintain_fast_sail_position" output="screen"></node> 
 
   <node pkg="olinoboat" type="point_boat_at_target.py" name="point_boat_at_target" output="screen"></node> 
@@ -22,12 +22,12 @@
   <node pkg="olinoboat" type="think.py" name="think" output="screen"></node> 
 
   <node pkg="olinoboat" type="mission_publish.py" name="mission_publisher" output="screen"></node>
-
-  <!--
-  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen" respawn ="true">
-    <param name="~port" value="/dev/ttyS0" />
-    <param name="~baud" value="57600" />
-  </node>
   -->
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen" clear_params="true" respawn ="true">
+    <param name="~port" value="/dev/ttyACM0" />
+    <param name="~baud" value="57600" />
+	
+  </node>
+
 
 </launch>

@@ -111,12 +111,12 @@ void setup()
   // Set up Arduino hardware pins
   pinMode(water_pin, INPUT); // set water_pin to input
   pinMode(13, OUTPUT);
-/*  
+/*
   rudder_servo.attach(rudder_servo_pin);
   sail_servo.attach(sail_servo_pin);
 */
   // Set up GPS
-  nss.begin(4800);
+//  nss.begin(4800);
 
   // Set up Compass
   Wire.begin();
