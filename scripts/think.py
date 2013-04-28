@@ -21,6 +21,8 @@ import go_short
 # If you set this to True, think.py will try to make a graph of where it wants you to go
 plot_heading = True
 
+rospy.sleep(10)
+print 'init think node'
 think_node = rospy.init_node("think")
 
 go_fast.init(think_node)
@@ -30,7 +32,7 @@ think_command_pub = rospy.Publisher('desired_heading', Int16)
 
 # This is the 'think loop', which redecides which direction to go every cycle
 while not rospy.is_shutdown():
-	time.sleep(5)
+	time.sleep(1)
 	fast_behavior = go_fast.suggested_heading
 	short_behavior = go_short.suggested_heading
         desired_behavior = [fast*short for fast, short in zip(fast_behavior, short_behavior)]

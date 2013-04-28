@@ -10,16 +10,21 @@ import rospy
 from std_msgs.msg import UInt16
 
 def pwm_callback(data):
-    offset = data.data
-    offset_angle = (offset * 360 / 1024) % 360
-    rospy.loginfo("set_offset.py: The wind sensor's reset so that the offset is %i out of 1024, or %i degrees" %(offset, offset_angle))
-    offset_publisher = rospy.Publisher("pwm_offset", UInt16, latch = True)
-    offset_publisher.publish(offset)
+	offset = data.data
+	offset_angle = (offset * 360 / 1024) % 360
+	#rospy.loginfo("set_offset.py: The wind sensor's reset so that the offset is %i out of 1024, or %i degrees" %(offset, offset_angle))
+	offset_publisher = rospy.Publisher("pwm_offset", UInt16, latch = True)
+	offset_publisher.publish(offset)
+	return offset
+	
+
 
 if __name__ == "__main__":
-    rospy.init_node('encoder_offset_setter')
-    rospy.Subscriber("pwm_duration", UInt16, pwm_callback)
-    rospy.sleep(2)
+	rospy.init_node('encoder_offset_setter')
+	rospy.sleep(5)
+
+	rospy.Subscriber("pwm_duration", UInt16, pwm_callback)
+	rospy.sleep(2)
 
     
 

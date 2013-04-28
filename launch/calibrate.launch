@@ -1,20 +1,22 @@
 <launch>
-<!--
+  <!--
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen" respawn ="true">
+    <param name="~port" value="/dev/ttyACM0" />
+    <param name="~baud" value="57600" />
+  </node>
+  -->
+  <node pkg="olinoboat" type="init_calibrate_sketch_start_serial_node.py" name="init_calibrate_sketch_start_serial_node" output="screen"></node>
+
   <node pkg="olinoboat" type="set_offset.py" name="set_offset" output="screen"></node> 
 
   <node pkg="olinoboat" type="set_servo.py" name="set_servo" output="screen"></node> 
   	
   <node pkg="olinoboat" type="set_compass.py" name="set_compass" output="screen"></node> 
 
-  
-  -->
   <node pkg="olinoboat" type="write_calibration.py" name="write_calibration" output="screen" cwd="node"></node> 
 
-<!--
-  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen" respawn ="true">
-    <param name="~port" value="/dev/ttyS0" />
-    <param name="~baud" value="57600" />
-  </node>
--->
+
+
+
 
 </launch>

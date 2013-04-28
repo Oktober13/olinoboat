@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import curses
 import roslib; roslib.load_manifest('olinoboat')
 import rospy
@@ -14,9 +16,9 @@ class teleop():
 
 	def set_publishers(self, node):
 		if node == 0:
-			rospy.init_node('encoder_offset_setter')
-		self.rudder_publisher = rospy.Publisher("rudder_servo", UInt16, latch = True)
-		self.sail_publisher = rospy.Publisher("sail_servo", UInt16, latch = True)
+			rospy.init_node('teleop_node')
+		self.rudder_publisher = rospy.Publisher("rudder", UInt16, latch = True)
+		self.sail_publisher = rospy.Publisher("sail", UInt16, latch = True)
     	
 	def get_user_input(self):
 		stdscr = curses.initscr()
@@ -72,5 +74,7 @@ class teleop():
 if __name__ == "__main__":
 	t=teleop()
 	t.verbose = 1
-	t.get_user_input()
-	rospy.spin()
+	while 1:
+		t.get_user_input()
+		print t.rudder_angle
+		rospy.spinOnce()

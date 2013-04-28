@@ -31,6 +31,8 @@ def sail_update_on_wind_direction_change():
 	# Sets the sail servo
 	servos.sail.set_position(sail_angle)
 
+rospy.sleep(10)
+print 'init maintaing_fast_sail_position node'
 current_node = rospy.init_node("maintain_fast_sail_position",anonymous=True)
 sensors.init(current_node)
 servos.init(current_node)

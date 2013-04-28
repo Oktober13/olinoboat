@@ -22,6 +22,9 @@ def mission_publish():
     # The current mission goal (in the format [x, y]) is publishes as a string, which makes it easy for ROS to publish and read
     mission_publisher.publish(str(current_goal))
 
+
+rospy.sleep(10)
+print 'init mission_publisher node'
 current_node = rospy.init_node("mission_publisher", anonymous=True)
 mission.init(current_node)
 mission_publisher = rospy.Publisher("current_waypoint_goal", String, latch = True)
