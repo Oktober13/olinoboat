@@ -48,6 +48,9 @@ def change_desired_heading(data):
 def clamp(n, minn, maxn):
     return max(min(maxn, n), minn)
 
+
+rospy.sleep(10)
+print 'init maintaing_point_boat_at_target node'
 current_node = rospy.init_node("point_boat_at_target_node",anonymous=True)
 sensors.init(current_node)
 servos.init(current_node)

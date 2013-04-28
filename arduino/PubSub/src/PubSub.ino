@@ -27,25 +27,33 @@ TinyGPS gps;
 
 
 LSM303 compass;
-Servo servo1;
-Servo servo2;
+Servo rudder_servo;
+Servo sail_servo;
 
 ros::NodeHandle nh;
 
 std_msgs:: UInt16 wind_msg; // The encoder outputs a 16 bit unsigned integer for the amount of time the pulse is high
 std_msgs:: UInt16 water_msg; // The water sensor outputs a value for its voltage between 0V and 5V depending on whether the circuit senses water or not.
 std_msgs:: UInt16 compass_msg; // The compass outputs a 16 bit unsigned integer from 0 at North clockwise to 360 if you've calibrated.
-std_msgs:: UInt16 servo1_msg;
-std_msgs:: UInt16 servo2_msg;
+std_msgs:: UInt16 rudder_servo_msg;
+std_msgs:: UInt16 sail_servo_msg;
 std_msgs:: Float64 gps_lat_msg;
 std_msgs:: Float64 gps_lon_msg;
+std_msgs:: UInt16 xmin;
+std_msgs:: UInt16 xmax;
+std_msgs:: UInt16 ymin;
+std_msgs:: UInt16 ymax;
+std_msgs:: UInt16 zmin;
+std_msgs:: UInt16 zmax;
+
 
 
 float flat;
 float flon;
-unsigned long age;int encoder_pin = 8;
-int servo1_pin = 9;
-int servo2_pin = 10;
+unsigned long age;
+int encoder_pin = 8;
+int rudder_servo_pin = 9;
+int sail_servo_pin = 10;
 int water_pin = A1;
 unsigned long duration;
 int water_voltage = 0;
@@ -53,19 +61,45 @@ bool newData = false;
 
 
 // Define callback functions for subscribers (what to do when a new signal comes in)
-  // Callback response for servo1
-void servo1_cb( const std_msgs::UInt16& cmd_msg1){	//function servo1_cb references the servo command
-  servo1.write(cmd_msg1.data); //set servo angle, should be from 0-180
+  // Callback response for rudder servo
+void rudder_cb( const std_msgs::UInt16& rudder_msg){	//function rudder_servo_cb references the servo command
+  rudder_servo.write(rudder_msg.data); //set servo angle, should be from 0-180
 }
  
-// Callback response for servo2
-void servo2_cb( const std_msgs::UInt16& cmd_msg2){ //function servo2_cb requires a UInt16 input
-  servo2.write(cmd_msg2.data); //set servo angle, should be from 0-180
+// Callback response for sail servo
+void sail_cb( const std_msgs::UInt16& sail_msg){ //function sail_servo_cb requires a UInt16 input
+  sail_servo.write(sail_msg.data); //set servo angle, should be from 0-180
 }
-
-ros::Subscriber<std_msgs::UInt16> sub1("rudder", servo1_cb);
-ros::Subscriber<std_msgs::UInt16> sub2("sail", servo2_cb);
-
+/*
+void xmin_cb(const std_msgs::UInt16&xmin){
+  compass.m_min.x =(xmin.data);
+}
+void ymin_cb(const std_msgs::UInt16&ymin){
+  compass.m_min.y =(ymin.data);
+}
+void zmin_cb(const std_msgs::UInt16&zmin){
+  compass.m_min.z =(zmin.data);
+}
+void xmax_cb(const std_msgs::UInt16&xmax){
+  compass.m_max.x =(xmax.data);
+}
+void ymax_cb(const std_msgs::UInt16&ymax){
+  compass.m_max.y =(ymax.data);
+}
+void zmax_cb(const std_msgs::UInt16&zmax){
+  compass.m_max.z =(zmax.data);
+}
+*/
+ros::Subscriber<std_msgs::UInt16> sub_rudder("rudder", rudder_cb);
+ros::Subscriber<std_msgs::UInt16> sub_sail("sail", sail_cb);
+/*
+ros::Subscriber<std_msgs::UInt16> sub_xmin("xmin", xmin_cb);
+ros::Subscriber<std_msgs::UInt16> sub_xmax("xmax", xmax_cb);
+ros::Subscriber<std_msgs::UInt16> sub_ymin("ymin", ymin_cb);
+ros::Subscriber<std_msgs::UInt16> sub_ymax("ymax", ymax_cb);
+ros::Subscriber<std_msgs::UInt16> sub_zmin("zmin", ymin_cb);
+ros::Subscriber<std_msgs::UInt16> sub_zmax("zmax", ymax_cb);
+*/
 ros::Publisher pub_wind("pwm_duration", &wind_msg);
 ros::Publisher pub_water("leak", &water_msg);
 ros::Publisher pub_compass("heading", &compass_msg);
@@ -77,10 +111,10 @@ void setup()
   // Set up Arduino hardware pins
   pinMode(water_pin, INPUT); // set water_pin to input
   pinMode(13, OUTPUT);
-  
-  servo1.attach(servo1_pin); //attach servo1 to servo1_pin
-  servo2.attach(servo2_pin); //attach servo2 to servo2_pin
-
+/*  
+  rudder_servo.attach(rudder_servo_pin);
+  sail_servo.attach(sail_servo_pin);
+*/
   // Set up GPS
   nss.begin(4800);
 
@@ -93,7 +127,7 @@ void setup()
   // Set up Encoder
   pinMode(encoder_pin, INPUT);
 
-  // Calibration values. Use the Calibrate example program to get the values for
+  // Default Calibration values. Use the Calibrate example program to get the actual values for
   // your compass.
   compass.m_min.x = -520; compass.m_min.y = -570; compass.m_min.z = -770;
   compass.m_max.x = +540; compass.m_max.y = +500; compass.m_max.z = 180;
@@ -103,15 +137,22 @@ void setup()
   nh.initNode();
   nh.advertise(pub_wind);
   nh.advertise(pub_compass);
-  nh.advertise(pub_water);
+//  nh.advertise(pub_water);
   nh.advertise(pub_gps_lat);
   nh.advertise(pub_gps_lon);
 
 
   // Subscribe to the node to the servo control topics
-  nh.subscribe(sub1);
-  nh.subscribe(sub2);
+  nh.subscribe(sub_rudder);
+  nh.subscribe(sub_sail);
 
+/*  nh.subscribe(sub_xmin);
+  nh.subscribe(sub_ymin);
+  nh.subscribe(sub_zmin);
+  nh.subscribe(sub_xmax);
+  nh.subscribe(sub_ymax);
+  nh.subscribe(sub_zmax);
+*/
   Serial.begin(57600);
   delay(50);
 }
@@ -120,7 +161,7 @@ unsigned long timer;
 
 
 
-void loop()                     // run over and over again
+void loop()
 {
 /*  for (unsigned long start = millis(); millis() - start < 1000;)
   {;
@@ -163,7 +204,10 @@ void loop()                     // run over and over again
 //   pub_water.publish(&water_msg);
   pub_compass.publish(&compass_msg);
 
-nh.loginfo("alaMode: Completed one loop on the alaMode, about to spin again");
+  nh.loginfo("alaMode: Completed one loop on the alaMode, about to spin again");
 
-  nh.spinOnce();    
+
+  nh.spinOnce();
+  delay(10);
+  
 }
