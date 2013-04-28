@@ -25,6 +25,6 @@ wind_angle_pub = rospy.Publisher("wind_angle", UInt16, latch = True)
 lat_pub = rospy.Publisher("y_position_UTM", Float64, latch = True)
 lon_pub = rospy.Publisher("x_position_UTM", Float64, latch = True)
 
-sensors.gps.set_callback(publish_data_for_bagging)
+sensors.compass.set_callback(publish_data_for_bagging)
 
 rospy.spin()
