@@ -1,0 +1,16 @@
+Get the Rosbian image to be stable, then try storing and distributing it
+	Try flashing the image from multiple operating systems
+
+Make the GPS play nicely with the other sensors and the servos
+
+Make example scenarios for writing your own code
+
+Make example scenarios of testing the code (add them to the Communications Testing documentation)
+
+Make example systems 
+
+Generalize as much code as possible (this involves telling them how to use 
+
+Try to make the wiring repeatable
+
+Try to get more wifi instructions - different types of wifi, different routers, etc.
