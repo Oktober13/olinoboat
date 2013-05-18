@@ -3,7 +3,7 @@
 # maintain_fast_sail_angle.py is activated every time the wind data changes, and then it updates the sail position
 #
 # 04/14/2013 - Current logic takes the wind angle relative to the boat, then sets the sail using the lookup table
-#		See the Appendix D appendix in the documentation for how the lookup table works
+#		See the Appendix D Index in the documentation for how the lookup table works
 #		For the future - this lookup table could be tuned to your boat, or a new method of updating the sails could be used
 
 # Imports necessary libraries
