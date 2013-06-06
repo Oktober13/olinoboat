@@ -27,9 +27,12 @@ def auto_trim_sails(data):
 	points_of_sail = [0, 45, 60, 90, 135, 180]
 	sail_points = [0, 0.5, 2, 4, 8, 9]
 	sail_setting = pl.interp(wind_angle, points_of_sail, sail_points)
-	sail_angle = sail_setting*(180/10) # PUT CODE HERE THAT TRANSFORMS A 0-10 SCALE TO ACTUAL FULL-IN FULL-OUT ON THE SERVO
+	sail_angle = myround(sail_setting*(180/10)) # PUT CODE HERE THAT TRANSFORMS A 0-10 SCALE TO ACTUAL FULL-IN FULL-OUT ON THE SERVO
 	rospy.loginfo("auto_trim_sails.py: sail servo is being set to: %i" %sail_angle)
 	sail_pub.publish(UInt16(sail_angle))
+
+def myround(x, base=5):
+	return int(base * round(float(x)/base))
 
 current_node = rospy.init_node("auto_trim_sails_node", anonymous=True)
 
