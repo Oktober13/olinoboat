@@ -21,13 +21,13 @@ from std_msgs.msg import UInt16
 #		The Controller Output, in this case, is called pid_command, and we use that to set our rudder angle
 def auto_trim_sails(data):
 	wind_angle = data.data
-	rospy.loginfo("auto_trim_sails.py: recieved wind angle: %i" %wind_angle)
+	# rospy.loginfo("auto_trim_sails.py: recieved wind angle: %i" %wind_angle)
 	wind_angle = abs((wind_angle + 180) % 360 - 180)
 	rospy.loginfo("auto_trim_sails.py: simplified (0-180) wind angle: %i" %wind_angle)
 	points_of_sail = [0, 45, 60, 90, 135, 180]
 	sail_points = [0, 0.5, 2, 4, 8, 9]
 	sail_setting = pl.interp(wind_angle, points_of_sail, sail_points)
-	sail_angle = sail_setting*(1/1) # PUT CODE HERE THAT TRANSFORMS A 0-10 SCALE TO ACTUAL FULL-IN FULL-OUT ON THE SERVO
+	sail_angle = sail_setting*(180/10) # PUT CODE HERE THAT TRANSFORMS A 0-10 SCALE TO ACTUAL FULL-IN FULL-OUT ON THE SERVO
 	rospy.loginfo("auto_trim_sails.py: sail servo is being set to: %i" %sail_angle)
 	sail_pub.publish(UInt16(sail_angle))
 
