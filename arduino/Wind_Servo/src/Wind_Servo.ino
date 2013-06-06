@@ -53,5 +53,5 @@ void loop(){
   pwm_msg.data = pwm_msg.data * (359.0/1254.0);    // Converts incoming 0-1254 data as 0-360 degrees
   pub_pwm.publish( &pwm_msg );    // Publishes encoder data
   nh.spinOnce();
-  delay(10);
+  delay(100);
 }
