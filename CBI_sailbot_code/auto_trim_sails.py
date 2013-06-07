@@ -31,7 +31,7 @@ def auto_trim_sails(data):
 	rospy.loginfo("auto_trim_sails.py: sail servo is being set to: %i" %sail_angle)
 	sail_pub.publish(UInt16(sail_angle))
 
-def myround(x, base=10):
+def myround(x, base=15):
 	return int(base * round(float(x)/base))
 
 current_node = rospy.init_node("auto_trim_sails_node", anonymous=True)
